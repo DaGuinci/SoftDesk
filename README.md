@@ -60,11 +60,11 @@ python manage.py migrate
 - [x] Initialize project
   - [x] Create Github repository
   - [x] Create local folder with Django
-  - [ ] Git init in local folder
-  - [ ] Manage gitignore
-  - [ ] Manage dependencies
-  - [ ] Set settings timezone
-  - [ ] Adapt readme.md
+  - [x] Git init in local folder
+  - [x] Manage gitignore
+  - [x] Manage dependencies
+  - [x] Set settings timezone
+  - [x] Adapt readme.md
   - [ ] Create authentication app
   - [ ] Make migrations
   - [ ] Git push
