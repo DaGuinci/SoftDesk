@@ -15,8 +15,3 @@ class User(AbstractUser):
         default=False
     )
     created_time = models.DateTimeField(auto_now_add=True)
-
-    def is_old_enough(self):
-        if self.age >= 15:
-            return True
-        return False

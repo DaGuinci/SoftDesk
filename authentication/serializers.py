@@ -36,11 +36,11 @@ class RegisterSerializer(ModelSerializer):
             'can_data_be_shared'
             )
 
-    # def validate(self, attrs):
-    #     if attrs['password'] != attrs['password2']:
-    #         raise ValidationError({"password": "Password fields didn't match."})
+    def validate(self, attrs):
+        if attrs['age'] < 15:
+            raise ValidationError({"age": "L'âge minimu requis est de 15 ans"})
 
-    #     return attrs
+        return attrs
 
     def create(self, validated_data):
         user = User.objects.create(
