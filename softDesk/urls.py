@@ -18,10 +18,11 @@ from django.urls import path, include
 
 from rest_framework import routers
 
-from authentication.views import UserViewset
+from authentication.views import UserViewset, AdminUserViewset
 
 router = routers.SimpleRouter()
 router.register('user', UserViewset, basename='user')
+router.register('admin/user', AdminUserViewset, basename='admin-user')
 
 urlpatterns = [
     path('admin/', admin.site.urls),
