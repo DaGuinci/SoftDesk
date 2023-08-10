@@ -65,21 +65,30 @@ python manage.py migrate
   - [x] Manage dependencies
   - [x] Set settings timezone
   - [x] Adapt readme.md
-  - [ ] Create authentication app
-  - [ ] Make migrations
-  - [ ] Git push
+  - [x] Create authentication app
+  - [x] Make migrations
+  - [x] Git push
+  - [x] Create superuser
 
 - [ ] Design project
   - [x] Need analysis
-  - [ ] Create authentication app
   - [x] Class diagramm
   - [ ] Paginate
 
 - [ ] Code project
+  - [ ] Create users endpoint
+  - [ ] Create first endpoint
+  - [ ] Install drf-spectacular
 
 - [ ] Optimize project
   - [ ] Check optimization project document
   - [ ] Check OWASP
+
+- [ ] Test project
+  - [ ] Test readme local new install
+
+- [ ] Clean project
+  - [ ] Generate flake8 report
 
 ## Diagrammes classes uml
 
@@ -112,13 +121,13 @@ class User {
   + login()
   + logout()
   + update_profile()
-  + verify_age(): bool
+  + is_old_enough(): bool
   + created_time: datetime
+  + create_project(Project)
 }
 
 class Contributor extends User {
   + contributings: list of Contributing
-  + create_project(Project)
   + create_issue(Project, Issue)
   + create_comment(Issue, Comment)
 }
