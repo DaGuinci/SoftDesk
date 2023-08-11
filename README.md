@@ -127,6 +127,7 @@ class User {
 }
 
 class Contributor extends User {
+' Cette classe est-elle utile ?
   + contributings: list of Contributing
   + create_issue(Project, Issue)
   + create_comment(Issue, Comment)

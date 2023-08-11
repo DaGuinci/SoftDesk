@@ -20,6 +20,7 @@ from rest_framework import routers
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 
 from authentication.views import UserViewset, AdminUserViewset, RegisterView
+from api.views import ProjectViewset
 
 from drf_spectacular.views import SpectacularAPIView, SpectacularRedocView, SpectacularSwaggerView
 
@@ -28,9 +29,12 @@ from drf_spectacular.views import SpectacularAPIView, SpectacularRedocView, Spec
 # schema_view = get_swagger_view(title='Pastebin API')
 
 
-router = routers.SimpleRouter()
-router.register('user', UserViewset, basename='user')
-router.register('admin/user', AdminUserViewset, basename='admin-user')
+authRouter = routers.SimpleRouter()
+authRouter.register('user', UserViewset, basename='user')
+# authRouter.register('admin/user', AdminUserViewset, basename='admin-user')
+
+apiRouter = routers.SimpleRouter()
+apiRouter.register('project', ProjectViewset, basename='project')
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -38,7 +42,8 @@ urlpatterns = [
     # path('api-auth/', include('rest_framework.urls')),
     path('auth/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('auth/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
-    path('auth/', include(router.urls)),
+    path('auth/', include(authRouter.urls)),
+    path('api/', include(apiRouter.urls)),
     path('docs/swagger/', SpectacularAPIView.as_view(), name='schema'),
     path('docs/swagger-ui/', SpectacularSwaggerView.as_view(url_name='schema'), name='swagger-ui'),
     path('docs/redoc/', SpectacularRedocView.as_view(url_name='schema'), name='redoc'),
