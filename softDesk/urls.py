@@ -34,11 +34,11 @@ router.register('admin/user', AdminUserViewset, basename='admin-user')
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('register/', RegisterView.as_view(), name='auth_register'),
+    path('auth/register/', RegisterView.as_view(), name='auth_register'),
     # path('api-auth/', include('rest_framework.urls')),
-    path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
-    path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
-    # path('api/', include(router.urls)),
+    path('auth/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('auth/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+    path('auth/', include(router.urls)),
     path('docs/swagger/', SpectacularAPIView.as_view(), name='schema'),
     path('docs/swagger-ui/', SpectacularSwaggerView.as_view(url_name='schema'), name='swagger-ui'),
     path('docs/redoc/', SpectacularRedocView.as_view(url_name='schema'), name='redoc'),

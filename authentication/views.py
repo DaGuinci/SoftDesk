@@ -8,6 +8,9 @@ from rest_framework.generics import CreateAPIView
 
 
 class RegisterView(CreateAPIView):
+    """Ajoute un utilisateur
+    L'age doit être de 15 ans minimum."""
+
     queryset = User.objects.all()
     # TODO vérifier ligne suivante
     # permission_classes = (AllowAny,)
