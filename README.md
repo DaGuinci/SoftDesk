@@ -89,6 +89,7 @@ python manage.py migrate
 
 - [ ] Clean project
   - [ ] Generate flake8 report
+  - [ ] Check token duration
 
 ## Diagrammes classes uml
 

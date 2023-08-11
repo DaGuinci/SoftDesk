@@ -16,6 +16,7 @@ class RegisterView(CreateAPIView):
     # permission_classes = (AllowAny,)
     serializer_class = RegisterSerializer
 
+
 class UserViewset(ReadOnlyModelViewSet):
 
     serializer_class = UserSerializer

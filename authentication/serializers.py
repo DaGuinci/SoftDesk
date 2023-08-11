@@ -29,7 +29,6 @@ class RegisterSerializer(ModelSerializer):
         fields = (
             'username',
             'password',
-            # 'password2',
             'age',
             'can_be_contacted',
             'can_data_be_shared'

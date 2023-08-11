@@ -8,6 +8,7 @@ class Project(models.Model):
         ('IO', 'IOS'),
         ('AN', 'Android'),
     ]
+    title = models.CharField(max_length=140)
     author = models.ForeignKey('authentication.User', on_delete=models.CASCADE)
     description = models.TextField(blank=True)
     type = models.CharField(
