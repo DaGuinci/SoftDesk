@@ -17,10 +17,16 @@ from django.contrib import admin
 from django.urls import path, include
 
 from rest_framework import routers
-from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
+from rest_framework_simplejwt.views import (
+    TokenObtainPairView,
+    TokenRefreshView
+    )
 
 from authentication.views import UserViewset, AdminUserViewset, RegisterView
-from api.views import ProjectViewset
+from api.views import (
+    ProjectViewset,
+    IssueViewset,
+    CommentViewset)
 
 from drf_spectacular.views import SpectacularAPIView, SpectacularRedocView, SpectacularSwaggerView
 
@@ -30,11 +36,26 @@ from drf_spectacular.views import SpectacularAPIView, SpectacularRedocView, Spec
 
 
 authRouter = routers.SimpleRouter()
+# Creer un user (tous)
+# Modifier son profil
+# Modifier un user (admin)
 authRouter.register('user', UserViewset, basename='user')
-# authRouter.register('admin/user', AdminUserViewset, basename='admin-user')
+authRouter.register('admin/user', AdminUserViewset, basename='admin-user')
 
 apiRouter = routers.SimpleRouter()
+
+# Creer un nouveau projet (utilisateur)
+# Ajouter un contributeur (auteur)
+# Modifier le projet (auteur)
 apiRouter.register('project', ProjectViewset, basename='project')
+
+# Créer une issue (contributeur)
+# Modifier une issue (auteur)
+apiRouter.register('issue', IssueViewset, basename='issue')
+
+# Créer un commentaire (contributeur)
+# Modifier un commentaire (auteur)
+apiRouter.register('comment', CommentViewset, basename='comment')
 
 urlpatterns = [
     path('admin/', admin.site.urls),
