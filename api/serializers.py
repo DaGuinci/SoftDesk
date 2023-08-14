@@ -10,7 +10,7 @@ class ProjectSerializer(ModelSerializer):
         fields = "__all__"
         read_only_fields = ("author", "id")
 
-    def _user(self):
+    def set_user(self):
         request = self.context.get("request", None)
         if request:
             return request.user
@@ -18,10 +18,10 @@ class ProjectSerializer(ModelSerializer):
     def create(self, validated_data):
 
         project = Project.objects.create(
-            # title=validated_data["title"],
+            title=validated_data["title"],
             description=validated_data["description"],
             type=validated_data["type"],
-            author=self._user(),
+            author=self.set_user(),
         )
         project.save()
 
