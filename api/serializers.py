@@ -2,6 +2,7 @@ from rest_framework.serializers import ModelSerializer
 
 from api.models import (
     Project,
+    Contributing,
     Issue,
     Comment)
 
@@ -10,7 +11,7 @@ class ProjectSerializer(ModelSerializer):
 
     class Meta:
         model = Project
-        fields = "__all__"
+        fields = '__all__'
         read_only_fields = ("author", "id")
 
     def set_user(self):
@@ -31,11 +32,18 @@ class ProjectSerializer(ModelSerializer):
         return project
 
 
+class ContributeSerializer(ModelSerializer):
+
+    class Meta:
+        model = Contributing
+        fields = '__all__'
+
+
 class IssueSerializer(ModelSerializer):
 
     class Meta:
         model = Issue
-        fields = "__all__"
+        fields = '__all__'
 
 
     def set_user(self):
@@ -66,7 +74,7 @@ class CommentSerializer(ModelSerializer):
 
     class Meta:
         model = Comment
-        fields = "__all__"
+        fields = '__all__'
 
 
     def set_user(self):
