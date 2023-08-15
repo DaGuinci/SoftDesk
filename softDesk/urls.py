@@ -26,6 +26,7 @@ from authentication.views import UserViewset, UserViewset, RegisterView
 from api.views import (
     ProjectViewset,
     ContributeViewset,
+    DeleteContributorViewset,
     IssueViewset,
     CommentViewset)
 
@@ -49,6 +50,8 @@ apiRouter = routers.SimpleRouter()
 apiRouter.register('project', ProjectViewset, basename='project')
 # Ajouter un contributeur (auteur)
 apiRouter.register('add_contributor', ContributeViewset, basename='add_contributor')
+# Supprimer un contributeur (auteur)
+apiRouter.register('remove_contributor', DeleteContributorViewset, basename='add_contributor')
 
 # Modifier le projet (auteur)
 
