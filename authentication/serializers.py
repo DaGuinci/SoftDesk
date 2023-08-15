@@ -36,7 +36,7 @@ class RegisterSerializer(ModelSerializer):
 
     def validate(self, attrs):
         if attrs['age'] < 15:
-            raise ValidationError({"age": "L'âge minimu requis est de 15 ans"})
+            raise ValidationError({"age": "L'âge minimum requis est de 15 ans"})
 
         return attrs
 

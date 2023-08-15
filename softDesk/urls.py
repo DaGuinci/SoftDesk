@@ -22,7 +22,7 @@ from rest_framework_simplejwt.views import (
     TokenRefreshView
     )
 
-from authentication.views import UserViewset, AdminUserViewset, RegisterView
+from authentication.views import UserViewset, UserViewset, RegisterView
 from api.views import (
     ProjectViewset,
     IssueViewset,
@@ -40,7 +40,7 @@ authRouter = routers.SimpleRouter()
 # Modifier son profil
 # Modifier un user (admin)
 authRouter.register('user', UserViewset, basename='user')
-authRouter.register('admin/user', AdminUserViewset, basename='admin-user')
+# authRouter.register('admin/user', AdminUserViewset, basename='admin-user')
 
 apiRouter = routers.SimpleRouter()
 
