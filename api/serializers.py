@@ -7,17 +7,20 @@ from api.models import (
     Comment)
 
 
-class ProjectSerializer(ModelSerializer):
-
-    class Meta:
-        model = Project
-        fields = '__all__'
-        read_only_fields = ("author", "id")
+class PostSerializer(ModelSerializer):
 
     def set_user(self):
         request = self.context.get("request", None)
         if request:
             return request.user
+
+
+class ProjectSerializer(PostSerializer):
+
+    class Meta:
+        model = Project
+        fields = '__all__'
+        read_only_fields = ("author", "id")
 
     def create(self, validated_data):
 
@@ -39,17 +42,12 @@ class ContributeSerializer(ModelSerializer):
         fields = '__all__'
 
 
-class IssueSerializer(ModelSerializer):
+class IssueSerializer(PostSerializer):
 
     class Meta:
         model = Issue
         fields = '__all__'
-
-
-    def set_user(self):
-        request = self.context.get("request", None)
-        if request:
-            return request.user
+        read_only_fields = ("author", "id")
 
     def create(self, validated_data):
 
@@ -64,7 +62,7 @@ class IssueSerializer(ModelSerializer):
 
             author=self.set_user(),
         )
-        # Vrefifier que l'user est bien contributeur
+
         issue.save()
 
         return issue
@@ -75,7 +73,6 @@ class CommentSerializer(ModelSerializer):
     class Meta:
         model = Comment
         fields = '__all__'
-
 
     def set_user(self):
         request = self.context.get("request", None)

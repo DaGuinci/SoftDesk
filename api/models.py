@@ -1,6 +1,7 @@
 import uuid
 from django.db import models
 
+
 class Project(models.Model):
     TYPE_CHOICES = [
         ('BE', 'Back-end'),
@@ -17,6 +18,19 @@ class Project(models.Model):
         null=False
     )
     created_time = models.DateTimeField(auto_now_add=True)
+
+    def get_contributors(self):
+        contributings = Contributing.objects.filter(
+            project_id=self.id
+        )
+
+        if contributings:
+            contributors = []
+            for contributing in contributings:
+                contributors.append(contributing.user_id)
+            return contributors
+
+        return None
 
 
 class Contributing(models.Model):
@@ -67,7 +81,10 @@ class Issue(models.Model):
         choices=PRIORITY_CHOICES,
         null=False
     )
-    assigned_to = models.ForeignKey('authentication.User', on_delete=models.CASCADE)
+    assigned_to = models.ForeignKey(
+        'authentication.User',
+        on_delete=models.CASCADE,
+        null=True)
     tag = models.CharField(
         max_length=3,
         choices=TAG_CHOICES,

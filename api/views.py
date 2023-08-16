@@ -3,7 +3,11 @@ from rest_framework.response import Response
 from rest_framework.decorators import action
 from rest_framework import status
 
-from authentication.permissions import IsAuthenticated, CanModifyProject
+from authentication.permissions import (
+    IsAuthenticated,
+    CanModifyProject,
+    IsContributor
+    )
 
 from api.models import Project, Issue, Comment, Contributing
 from api.serializers import (
@@ -27,14 +31,15 @@ class ProjectViewset(ModelViewSet):
 
 class ContributeViewset(ModelViewSet):
 
-    permission_classes = [CanModifyProject]
+    permission_classes = [IsAuthenticated, CanModifyProject]
 
     serializer_class = ContributeSerializer
 
-    http_method_names = ['post']
-
-    @action(methods=['post'], detail=False,
-            url_path='delete', url_name='change_password')
+    http_method_names = ['post', 'patch']
+    # Supprimer un llien projet contributeur à partir
+    # des id projet et contributeur
+    @action(methods=['patch'], detail=False,
+            url_path='delete', url_name='delete_contributor')
     def delete(self, request, project=None, contributor=None):
         project = request.data['project']
         contributor = request.data['contributor']
@@ -47,12 +52,9 @@ class ContributeViewset(ModelViewSet):
         return queryset
 
 
-class DeleteContributorViewset(ModelViewSet):
-    pass
-
 class IssueViewset(ModelViewSet):
 
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated, IsContributor]
 
     serializer_class = IssueSerializer
 

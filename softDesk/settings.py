@@ -150,6 +150,7 @@ JWT_AUTH = {
 SPECTACULAR_SETTINGS = {
     'TITLE': 'SoftDesk',
     'DESCRIPTION': 'Track projects and issues',
+    'SCHEMA_PATH_PREFIX': '/api',
     # 'VERSION': '1.0.0',
     'SERVE_INCLUDE_SCHEMA': False,
     "SWAGGER_UI_SETTINGS": {
@@ -157,4 +158,7 @@ SPECTACULAR_SETTINGS = {
         "persistAuthorization": True,
         "displayOperationId": True,
     },
-    }
+    # Activé pour montrer sur Swagger que les champs des requêtes PATCH sont tous optionnel
+    'COMPONENT_SPLIT_PATCH': True,
+    'COMPONENT_SPLIT_REQUEST': True,
+}

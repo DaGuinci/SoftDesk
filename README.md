@@ -73,12 +73,13 @@ python manage.py migrate
 - [ ] Design project
   - [x] Need analysis
   - [x] Class diagramm
-  - [ ] Paginate
+  - [x] Paginate
 
 - [ ] Code project
   - [ ] Create users endpoint
   - [ ] Create first endpoint
   - [ ] Install drf-spectacular
+  - [ ] Reecrire contributor en action 'patch' de project
 
 - [ ] Optimize project
   - [ ] Check optimization project document
@@ -90,6 +91,32 @@ python manage.py migrate
 - [ ] Clean project
   - [ ] Generate flake8 report
   - [ ] Check token duration
+
+## Initialisation des données
+
+### Utilisateurs
+
+* admin-oc
+password: password-oc
+
+* string
+password: string
+
+* John
+password: string
+
+* Ringo
+password: string
+
+### Projets
+
+* Premier projet
+Propriétaire: string
+Contributeurs: string, John
+
+* Second projet
+Propriétaire: Ringo
+
 
 ## Diagrammes classes uml
 
