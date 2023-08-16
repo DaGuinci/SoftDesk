@@ -5,9 +5,11 @@ from rest_framework import status
 
 from authentication.permissions import (
     IsAuthenticated,
+    )
+from api.permissions import (
     CanModifyProject,
     IsContributor
-    )
+)
 
 from api.models import Project, Issue, Comment, Contributing
 from api.serializers import (
