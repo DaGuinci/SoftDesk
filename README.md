@@ -112,7 +112,7 @@ password: string
 
 * Premier projet
 Propriétaire: string
-Contributeurs: string, John
+Contributeurs: John
 
 * Second projet
 Propriétaire: Ringo

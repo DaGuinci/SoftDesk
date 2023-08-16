@@ -25,7 +25,7 @@ from rest_framework_simplejwt.views import (
 from authentication.views import UserViewset, UserViewset, RegisterView
 from api.views import (
     ProjectViewset,
-    ContributeViewset,
+    # ContributeViewset,
     IssueViewset,
     CommentViewset)
 
@@ -49,7 +49,7 @@ apiRouter = routers.SimpleRouter()
 apiRouter.register('project', ProjectViewset, basename='project')
 # Ajouter un contributeur (auteur)
 # Supprimer un contributeur (auteur)
-apiRouter.register('contributor', ContributeViewset, basename='contributor')
+# apiRouter.register('contributor', ContributeViewset, basename='contributor')
 
 # Modifier le projet (auteur)
 

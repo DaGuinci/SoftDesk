@@ -1,6 +1,8 @@
 import uuid
 from django.db import models
 
+from authentication.models import User
+
 
 class Project(models.Model):
     TYPE_CHOICES = [
@@ -18,6 +20,20 @@ class Project(models.Model):
         null=False
     )
     created_time = models.DateTimeField(auto_now_add=True)
+
+    def add_contributor(self, user_id):
+        contributor = User.objects.get(id=user_id)
+        Contributing.objects.create(
+            project=self,
+            contributor=contributor
+        )
+
+    def remove_contributor(self, user_id):
+        contributing = Contributing.objects.filter(
+            project=self,
+            contributor_id=user_id
+        )
+        contributing.delete()
 
     def get_contributors(self):
         contributings = Contributing.objects.filter(

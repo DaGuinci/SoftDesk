@@ -5,31 +5,30 @@ from api.models import Project, Contributing
 
 class ProjectPermission(BasePermission):
     # TODO Ctte classe est elle vraiment utile ?
-    def is_project_owner(self, request):
-        project = Project.objects.get(id=request.data['project'])
+    def is_project_owner(self, request, projetc_id):
+        project = projetc_id
         if project.author == request.user:
             return True
         return False
 
 
-class CanModifyProject(ProjectPermission):
+class IsProjectOwner(BasePermission):
 
-    def has_permission(self, request, view):
-        if request.user.is_authenticated and self.is_project_owner(request):
+    def has_object_permission(self, request, view, obj):
+        if obj.author == request.user:
             return True
-
         return False
 
 
 class IsContributor(BasePermission):
 
     def has_permission(self, request, view):
-        contributing = Contributing.objects.filter(
-            project_id=request.data['project'],
-            contributor_id=request.user.id
-            )
+#         contributing = Contributing.objects.filter(
+#             project_id=request.pk,
+#             contributor_id=request.user.id
+#             )
 
-        if contributing:
-            return True
+#         if contributing:
+#             return True
 
         return False

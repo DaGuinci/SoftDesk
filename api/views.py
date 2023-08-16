@@ -7,14 +7,14 @@ from authentication.permissions import (
     IsAuthenticated,
     )
 from api.permissions import (
-    CanModifyProject,
+    IsProjectOwner,
     IsContributor
 )
 
-from api.models import Project, Issue, Comment, Contributing
+from api.models import Project, Issue, Comment
 from api.serializers import (
     ProjectSerializer,
-    ContributeSerializer,
+    ContributorSerializer,
     IssueSerializer,
     CommentSerializer
     )
@@ -26,31 +26,28 @@ class ProjectViewset(ModelViewSet):
 
     serializer_class = ProjectSerializer
 
-    def get_queryset(self):
-        queryset = Project.objects.all()
-        return queryset
+    @action(methods=['put'],
+            detail=True,
+            url_path='add_contributor',
+            url_name='add_contributor',
+            serializer_class=ContributorSerializer,
+            permission_classes=[IsProjectOwner])
+    def add_contributor(self, request, pk, contributor=None):
+        self.get_object().add_contributor(request.data['contributor'])
+        return Response(status=status.HTTP_202_ACCEPTED)
 
-
-class ContributeViewset(ModelViewSet):
-
-    permission_classes = [IsAuthenticated, CanModifyProject]
-
-    serializer_class = ContributeSerializer
-
-    http_method_names = ['post', 'patch']
-    # Supprimer un llien projet contributeur à partir
-    # des id projet et contributeur
-    @action(methods=['patch'], detail=False,
-            url_path='delete', url_name='delete_contributor')
-    def delete(self, request, project=None, contributor=None):
-        project = request.data['project']
-        contributor = request.data['contributor']
-        contributing = Contributing.objects.filter(project=project, contributor=contributor)
-        contributing.delete()
+    @action(methods=['put'],
+            detail=True,
+            url_path='remove_contributor',
+            url_name='remove_contributor',
+            serializer_class=ContributorSerializer,
+            permission_classes=[IsProjectOwner])
+    def remove_contributor(self, request, pk, contributor=None):
+        self.get_object().remove_contributor(request.data['contributor'])
         return Response(status=status.HTTP_202_ACCEPTED)
 
     def get_queryset(self):
-        queryset = Contributing.objects.all()
+        queryset = Project.objects.all()
         return queryset
 
 

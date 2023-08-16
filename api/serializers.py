@@ -35,11 +35,11 @@ class ProjectSerializer(PostSerializer):
         return project
 
 
-class ContributeSerializer(ModelSerializer):
+class ContributorSerializer(ModelSerializer):
 
     class Meta:
         model = Contributing
-        fields = '__all__'
+        fields = ['contributor']
 
 
 class IssueSerializer(PostSerializer):
