@@ -22,7 +22,7 @@ from api.serializers import (
 
 class ProjectViewset(ModelViewSet):
 
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated, IsProjectOwner]
 
     serializer_class = ProjectSerializer
 
@@ -31,7 +31,8 @@ class ProjectViewset(ModelViewSet):
             url_path='add_contributor',
             url_name='add_contributor',
             serializer_class=ContributorSerializer,
-            permission_classes=[IsProjectOwner])
+            # permission_classes=[IsProjectOwner]
+            )
     def add_contributor(self, request, pk, contributor=None):
         self.get_object().add_contributor(request.data['contributor'])
         return Response(status=status.HTTP_202_ACCEPTED)
@@ -41,7 +42,8 @@ class ProjectViewset(ModelViewSet):
             url_path='remove_contributor',
             url_name='remove_contributor',
             serializer_class=ContributorSerializer,
-            permission_classes=[IsProjectOwner])
+            # permission_classes=[IsProjectOwner]
+            )
     def remove_contributor(self, request, pk, contributor=None):
         self.get_object().remove_contributor(request.data['contributor'])
         return Response(status=status.HTTP_202_ACCEPTED)
