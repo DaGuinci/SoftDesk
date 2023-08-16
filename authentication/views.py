@@ -21,6 +21,8 @@ class UserViewset(ModelViewSet):
 
     permission_classes = [CanModifyUser]
 
+    http_method_names = ['get', 'patch']
+
     serializer_class = UserSerializer
 
     def get_queryset(self):
