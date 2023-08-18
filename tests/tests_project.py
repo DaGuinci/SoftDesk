@@ -9,6 +9,11 @@ from .tests_datas_setup import TestSetupAPITestCase
 class ApiAPITestCase(TestSetupAPITestCase):
 
     def get_project_list_data(self, projects):
+        for project in projects:
+            contributors = project.get_contributors()
+            project.contributors_id = []
+            for contributor in contributors:
+                project.contributors_id.append(contributor.id)
         return [
             {
                 'id': project.id,
@@ -16,11 +21,16 @@ class ApiAPITestCase(TestSetupAPITestCase):
                 'description': project.description,
                 'type': project.type,
                 'author': project.author.id,
+                'contributors': project.contributors_id
             } for project in projects
         ]
 
     def expected_reponses_content(self, test):
         if test == 'get_project_1':
+            contributors = self.project_1.get_contributors()
+            contributors_id = []
+            for contributor in contributors:
+                contributors_id.append(contributor.id)
             return (
                 {
                     'id': self.project_1.id,
@@ -28,16 +38,22 @@ class ApiAPITestCase(TestSetupAPITestCase):
                     'author': self.project_1.author.id,
                     'description': self.project_1.description,
                     'type': self.project_1.type,
+                    'contributors': contributors_id
                 }
             )
         if test == 'updated_project':
+            contributors = self.project_1.get_contributors()
+            contributors_id = []
+            for contributor in contributors:
+                contributors_id.append(contributor.id)
             return (
                 {
                     'id': self.project_1.id,
                     'title': 'Venger Patrocle',
-                    'author': self.project_1.author.id,
                     'description': 'Tuer Hector en faisant attention à mon talon',
                     'type': 'BE',
+                    'author': self.project_1.author.id,
+                    'contributors': contributors_id
                 }
             )
 

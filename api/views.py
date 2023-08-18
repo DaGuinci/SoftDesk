@@ -7,8 +7,7 @@ from authentication.permissions import (
     IsAuthenticated,
     )
 from api.permissions import (
-    IsProjectOwner,
-    IsContributor
+    ProjectPermissions
 )
 
 from api.models import Project, Issue, Comment
@@ -22,29 +21,27 @@ from api.serializers import (
 
 class ProjectViewset(ModelViewSet):
 
-    permission_classes = [IsAuthenticated, IsProjectOwner]
+    permission_classes = [IsAuthenticated, ProjectPermissions]
 
     serializer_class = ProjectSerializer
 
     @action(methods=['put'],
             detail=True,
-            url_path='add_contributor',
             url_name='add_contributor',
             serializer_class=ContributorSerializer,
-            # permission_classes=[IsProjectOwner]
             )
     def add_contributor(self, request, pk, contributor=None):
-        self.get_object().add_contributor(request.data['contributor'])
-        return Response(status=status.HTTP_202_ACCEPTED)
+        # project = self.get_object()
+        self.get_object().contributors.add(request.data['contributor'])
+        return Response(status='Contributeur ajouté')
 
     @action(methods=['put'],
             detail=True,
-            url_path='remove_contributor',
             url_name='remove_contributor',
             serializer_class=ContributorSerializer,
-            # permission_classes=[IsProjectOwner]
             )
     def remove_contributor(self, request, pk, contributor=None):
+        # TODO verif la suppression de manytomany
         self.get_object().remove_contributor(request.data['contributor'])
         return Response(status=status.HTTP_202_ACCEPTED)
 
@@ -55,7 +52,7 @@ class ProjectViewset(ModelViewSet):
 
 class IssueViewset(ModelViewSet):
 
-    permission_classes = [IsAuthenticated, IsContributor]
+    permission_classes = [IsAuthenticated]
 
     serializer_class = IssueSerializer
 

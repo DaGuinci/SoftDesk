@@ -20,8 +20,17 @@ class Project(models.Model):
         null=False
     )
     created_time = models.DateTimeField(auto_now_add=True)
+    contributors = models.ManyToManyField(
+        User,
+        through='Contributing',
+        related_name='contributors')
+
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+        self.contributors.add(self.author)
 
     def add_contributor(self, user_id):
+        # TODO plus utile
         contributor = User.objects.get(id=user_id)
         Contributing.objects.create(
             project=self,
@@ -29,6 +38,7 @@ class Project(models.Model):
         )
 
     def remove_contributor(self, user_id):
+        # TODO plus utile
         contributing = Contributing.objects.filter(
             project=self,
             contributor_id=user_id
@@ -43,7 +53,7 @@ class Project(models.Model):
         if contributings:
             contributors = []
             for contributing in contributings:
-                contributors.append(contributing.user_id)
+                contributors.append(contributing.contributor)
             return contributors
 
         return None

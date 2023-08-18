@@ -30,6 +30,7 @@ class ProjectSerializer(PostSerializer):
             type=validated_data["type"],
             author=self.set_user(),
         )
+
         project.save()
 
         return project

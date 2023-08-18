@@ -1,5 +1,7 @@
 from django.urls import reverse_lazy
 
+from authentication.models import User
+
 from .tests_datas_setup import TestSetupAPITestCase
 
 
@@ -20,7 +22,7 @@ class AuthAPITestCase(TestSetupAPITestCase):
     def expected_reponses_content(self, test):
         if test == 'can_register':
             return {
-                'username': 'ulysse',
+                'username': 'agamemnon',
                 'age': 16,
                 'can_be_contacted': True,
                 'can_data_be_shared': False
@@ -45,8 +47,8 @@ class UserTestCases(AuthAPITestCase):
     def test_can_register(self):
         url = reverse_lazy('auth_register')
         response = self.client.post(url, {
-            'username': 'ulysse',
-            'password': 'personne',
+            'username': 'agamemnon',
+            'password': 'pass',
             'age': 16,
             'can_be_contacted': True,
             'can_data_be_shared': False
@@ -60,8 +62,8 @@ class UserTestCases(AuthAPITestCase):
     def test_is_too_young(self):
         url = reverse_lazy('auth_register')
         response = self.client.post(url, {
-            'username': 'ulysse',
-            'password': 'personne',
+            'username': 'agamemnon',
+            'password': 'pass',
             'age': 14,
             'can_be_contacted': True,
             'can_data_be_shared': False
@@ -145,8 +147,9 @@ class UserTestCases(AuthAPITestCase):
     def test_can_get_users_list(self):
         url = reverse_lazy('user-list')
         response = self.client.get(url)
+        ulysse = User.objects.get(username='ulysse')
         self.assertEqual(response.status_code, 200)
         self.assertEqual(
             response.json(),
-            self.get_user_list_data([self.hector, self.achille])
+            self.get_user_list_data([self.hector, self.achille, ulysse])
             )

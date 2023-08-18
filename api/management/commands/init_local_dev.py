@@ -4,6 +4,7 @@ from requests import request
 # from django.contrib.auth.models import get_user_model
 
 from api.models import Project, Contributing
+from api.serializers import ProjectSerializer
 
 UserModel = get_user_model()
 
@@ -13,11 +14,15 @@ USERS = [
         'password': 'string',
     },
     {
-        'username': 'John',
+        'username': 'Achille',
         'password': 'string',
     },
     {
-        'username': 'Ringo',
+        'username': 'Hector',
+        'password': 'string',
+    },
+    {
+        'username': 'Ulysse',
         'password': 'string',
     },
 ]
@@ -42,30 +47,27 @@ class Command(BaseCommand):
             UserModel.objects.create_user(username=user['username'], password=user['password'])
 
         # exit()
-        john = UserModel.objects.get(username='John')
-        ringo = UserModel.objects.get(username='Ringo')
-        string = UserModel.objects.get(username='string')
+        achille = UserModel.objects.get(username='Achille')
+        hector = UserModel.objects.get(username='Hector')
+        ulysse = UserModel.objects.get(username='Ulysse')
 
         # Création de projets
         first_project = Project.objects.create(
-            title='Premier projet',
-            description='Description du premier projet',
+            title='Prendre Troie',
+            description='Récupérer Hélène',
             type='FE',
-            author_id=string.id
+            author_id=achille.id
         )
 
         Project.objects.create(
-            title='Second projet',
-            description='Description du deuxième projet',
+            title='Survivre',
+            description='Résister aux Grecs',
             type='IO',
-            author_id=ringo.id
+            author_id=hector.id
         )
 
-        # Création de contributeurs
-        Contributing.objects.create(
-            contributor_id=john.id,
-            project_id=first_project.id
-        )
+        # Ajout d'un contributeur
+        first_project.contributors.add(ulysse)
 
         UserModel.objects.create_superuser(ADMIN_ID, 'admin@oc.drf', ADMIN_PASSWORD)
 

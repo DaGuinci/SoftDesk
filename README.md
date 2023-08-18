@@ -81,6 +81,7 @@ python manage.py migrate
   - [x] Install drf-spectacular
   - [x] Rewrite contributor en action 'patch' de project
   - [ ] Rewrite register en action 'create' du user
+  - [ ] Code a get contributors endpoint ?
 
 - [ ] Optimize project
   - [ ] Check optimization project document
@@ -93,6 +94,9 @@ python manage.py migrate
 - [ ] Clean project
   - [ ] Generate flake8 report
   - [ ] Check token duration
+
+- [ ] Ask to client
+
 
 ## Initialisation des données
 
