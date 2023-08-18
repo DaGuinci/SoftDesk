@@ -15,6 +15,3 @@ class User(AbstractUser):
         default=False
     )
     created_time = models.DateTimeField(auto_now_add=True)
-
-
-# TODO Faut il créer une classe spécifique Contributor

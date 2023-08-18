@@ -76,16 +76,18 @@ python manage.py migrate
   - [x] Paginate
 
 - [ ] Code project
-  - [ ] Create users endpoint
-  - [ ] Create first endpoint
-  - [ ] Install drf-spectacular
-  - [ ] Reecrire contributor en action 'patch' de project
+  - [x] Create users endpoint
+  - [x] Create first endpoint
+  - [x] Install drf-spectacular
+  - [x] Rewrite contributor en action 'patch' de project
+  - [ ] Rewrite register en action 'create' du user
 
 - [ ] Optimize project
   - [ ] Check optimization project document
   - [ ] Check OWASP
 
 - [ ] Test project
+  - [ ] Write tests
   - [ ] Test readme local new install
 
 - [ ] Clean project

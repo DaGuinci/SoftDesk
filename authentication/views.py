@@ -12,8 +12,7 @@ class RegisterView(CreateAPIView):
     L'age doit être de 15 ans minimum."""
 
     queryset = User.objects.all()
-    # TODO vérifier ligne suivante
-    # permission_classes = (AllowAny,)
+
     serializer_class = RegisterSerializer
 
 
@@ -21,7 +20,7 @@ class UserViewset(ModelViewSet):
 
     permission_classes = [CanModifyUser]
 
-    http_method_names = ['get', 'patch']
+    http_method_names = ['get', 'patch', 'delete']
 
     serializer_class = UserSerializer
 
