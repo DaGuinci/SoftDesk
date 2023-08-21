@@ -1,9 +1,10 @@
 from django.urls import reverse_lazy
 
-from rest_framework.test import APIClient
+from api.views import ProjectViewset as view
 
 from .tests_datas_setup import TestSetupAPITestCase
 
+from rest_framework import routers
 
 # Mise en place des datas pour test
 class ApiAPITestCase(TestSetupAPITestCase):
@@ -40,87 +41,59 @@ class ApiAPITestCase(TestSetupAPITestCase):
                     'type': 'BE',
                 }
             )
-
         return None
 
 
-class ProjectTestCases(ApiAPITestCase):
+class ContributingTestCases(ApiAPITestCase):
 
     def test_get_contributors_by_project(self):
-        contributors = self.project_1.get_contributors()
-        self.assertEqual(contributors, [self.achille, self.ulysse])
+        contributors = self.project_1.contributors.all()
+        self.assertEqual(list(contributors), [self.achille, self.ulysse])
 
-    def test_access_contributed_project(self):
-        url = reverse_lazy('project-detail', kwargs={'pk': self.project_1.id})
+    def test_add_contributor(self):
 
-        # Get
+        url = reverse_lazy('project-add_contributor', kwargs={'pk': self.project_1.id})
+        post_datas = {
+            'contributor': self.hector.id
+        }
+
+        # Authentifié non auteur
+        self.client.force_authenticate(user=self.hector)
+        response = self.client.patch(url, post_datas)
+        self.assertEqual(response.status_code, 403)  # 403 Forbidden
+
+        # Authentifié contributeur
         self.client.force_authenticate(user=self.ulysse)
-        response = self.client.get(url)
+        response = self.client.patch(url, post_datas)
+        self.assertEqual(response.status_code, 403)  # 403 Forbidden
+
+        # Authentifié auteur
+        self.client.force_authenticate(user=self.achille)
+        response = self.client.patch(url, post_datas)
         self.assertEqual(response.status_code, 200)  # 200 OK
 
-        #
+        # Répétition contributings
+        response = self.client.patch(url, post_datas)
+        self.assertEqual(response.status_code, 200)  # 200 OK
 
+    def test_remove_contributor(self):
 
+        url = reverse_lazy('project-remove_contributor', kwargs={'pk': self.project_1.id})
+        post_datas = {
+            'contributor': self.ulysse.id
+        }
 
+        # Authentifié non auteur
+        self.client.force_authenticate(user=self.hector)
+        response = self.client.patch(url, post_datas)
+        self.assertEqual(response.status_code, 403)  # 403 Forbidden
 
-    # # exit()
-    # def test_get_project_details(self):
-    #     url = reverse_lazy('project-detail', kwargs={'pk': self.project_1.id})
+        # Authentifié contributeur
+        self.client.force_authenticate(user=self.ulysse)
+        response = self.client.patch(url, post_datas)
+        self.assertEqual(response.status_code, 403)  # 403 Forbidden
 
-    #     # Non authentifié
-    #     response = self.client.get(url)
-    #     self.assertEqual(response.status_code, 401)  # 401 Unauthorized
-
-    #     # Authentifié par autre user, non contributeur, non auteur
-    #     self.client.force_authenticate(user=self.hector)
-    #     response = self.client.get(url)
-    #     self.assertEqual(response.status_code, 200)  # 403 Forbidden
-
-    #     # Authentifié comme auteur
-    #     self.client.force_authenticate(user=self.achille)
-    #     response = self.client.get(url)
-    #     response.json().pop('created_time')
-    #     self.assertEqual(response.status_code, 200)  # 200 OK
-    #     self.assertEqual(response.json(),
-    #                      self.expected_reponses_content('get_project_1'))
-
-    # def test_create_project(self):
-    #     url = reverse_lazy('project-list')
-    #     post_datas = {
-    #         'title': 'Prise de Troie',
-    #         'description': 'Récupérer Hélène',
-    #         'type': 'FE'
-    #     }
-
-    #     # Non authentifié
-    #     response = self.client.post(url, post_datas)
-    #     self.assertEqual(response.status_code, 401)  # 401 Unauthorized
-
-    #     # Authentifié
-    #     self.client.force_authenticate(user=self.hector)
-    #     response = self.client.post(url, post_datas)
-    #     self.assertEqual(response.status_code, 201)  # 201 Created
-
-    # def test_update_project(self):
-    #     url = reverse_lazy('project-detail', kwargs={'pk': self.project_1.id})
-    #     post_datas = {
-    #         'title': 'Venger Patrocle',
-    #         'description': 'Tuer Hector en faisant attention à mon talon',
-    #         'type': 'BE'
-    #     }
-    #     # Non authentifié
-    #     response = self.client.put(url, post_datas)
-    #     self.assertEqual(response.status_code, 401)  # 401 Unauthorized
-
-    #     # Authentifié par autre user, non contributeur, non auteur
-    #     self.client.force_authenticate(user=self.hector)
-    #     response = self.client.put(url, post_datas)
-    #     self.assertEqual(response.status_code, 403)  # 403 Forbidden
-
-    #     # Authentifié comme auteur
-    #     self.client.force_authenticate(user=self.achille)
-    #     response = self.client.put(url, post_datas)
-    #     response.json().pop('created_time')
-    #     self.assertEqual(response.status_code, 200)  # 200 OK
-    #     self.assertEqual(response.json(),
-    #                      self.expected_reponses_content('updated_project'))
+        # Authentifié auteur
+        self.client.force_authenticate(user=self.achille)
+        response = self.client.patch(url, post_datas)
+        self.assertEqual(response.status_code, 200)  # 200 OK

@@ -94,6 +94,7 @@ python manage.py migrate
 - [ ] Clean project
   - [ ] Generate flake8 report
   - [ ] Check token duration
+  - [ ] Remove django-extensions package
 
 - [ ] Ask to client
 

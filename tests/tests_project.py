@@ -10,7 +10,7 @@ class ApiAPITestCase(TestSetupAPITestCase):
 
     def get_project_list_data(self, projects):
         for project in projects:
-            contributors = project.get_contributors()
+            contributors = list(self.project_1.contributors.all())
             project.contributors_id = []
             for contributor in contributors:
                 project.contributors_id.append(contributor.id)
@@ -27,7 +27,7 @@ class ApiAPITestCase(TestSetupAPITestCase):
 
     def expected_reponses_content(self, test):
         if test == 'get_project_1':
-            contributors = self.project_1.get_contributors()
+            contributors = list(self.project_1.contributors.all())
             contributors_id = []
             for contributor in contributors:
                 contributors_id.append(contributor.id)
@@ -42,7 +42,7 @@ class ApiAPITestCase(TestSetupAPITestCase):
                 }
             )
         if test == 'updated_project':
-            contributors = self.project_1.get_contributors()
+            contributors = list(self.project_1.contributors.all())
             contributors_id = []
             for contributor in contributors:
                 contributors_id.append(contributor.id)
@@ -70,6 +70,7 @@ class ProjectTestCases(ApiAPITestCase):
         self.assertEqual(response.status_code, 401)  # 401 Unauthorized
 
         # Authentifié
+        # TODO Etudier le niveau de detail accessible en liste
         self.client.force_authenticate(user=self.hector)
         response = self.client.get(url)
         for project in response.json():
@@ -89,6 +90,11 @@ class ProjectTestCases(ApiAPITestCase):
         self.client.force_authenticate(user=self.hector)
         response = self.client.get(url)
         self.assertEqual(response.status_code, 403)  # 403 Forbidden
+
+        # authentifié comme contributeur
+        self.client.force_authenticate(user=self.ulysse)
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)  # 200 OK
 
         # Authentifié comme auteur
         self.client.force_authenticate(user=self.achille)

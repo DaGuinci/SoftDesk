@@ -42,8 +42,9 @@ INSTALLED_APPS = [
     'rest_framework_simplejwt',
     'drf_spectacular',
     'authentication',
-    'api'
-]
+    'api',
+    # 'django_extensions',
+    ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

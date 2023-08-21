@@ -29,33 +29,6 @@ class Project(models.Model):
         super().save(*args, **kwargs)
         self.contributors.add(self.author)
 
-    def add_contributor(self, user_id):
-        # TODO plus utile
-        contributor = User.objects.get(id=user_id)
-        Contributing.objects.create(
-            project=self,
-            contributor=contributor
-        )
-
-    def remove_contributor(self, user_id):
-        # TODO plus utile
-        contributing = Contributing.objects.filter(
-            project=self,
-            contributor_id=user_id
-        )
-        contributing.delete()
-
-    def get_contributors(self):
-        contributings = Contributing.objects.filter(
-            project_id=self.id
-        )
-
-        if contributings:
-            contributors = []
-            for contributing in contributings:
-                contributors.append(contributing.contributor)
-            return contributors
-
         return None
 
 
@@ -69,8 +42,10 @@ class Contributing(models.Model):
                                 related_name='is_developed'
                                 )
 
-    class Meta:
-        unique_together = ('contributor', 'project')
+    # class Meta:
+        # constraints = [
+        #     models.UniqueConstraint(fields=['contributor', 'project'], name='unique contributing')
+        # ]
 
 
 class Issue(models.Model):

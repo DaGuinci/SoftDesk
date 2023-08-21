@@ -25,25 +25,24 @@ class ProjectViewset(ModelViewSet):
 
     serializer_class = ProjectSerializer
 
-    @action(methods=['put'],
+    @action(methods=['patch'],
             detail=True,
             url_name='add_contributor',
+            basename='add_contributor',
             serializer_class=ContributorSerializer,
             )
     def add_contributor(self, request, pk, contributor=None):
-        # project = self.get_object()
         self.get_object().contributors.add(request.data['contributor'])
-        return Response(status='Contributeur ajouté')
+        return Response()
 
-    @action(methods=['put'],
+    @action(methods=['patch'],
             detail=True,
             url_name='remove_contributor',
             serializer_class=ContributorSerializer,
             )
     def remove_contributor(self, request, pk, contributor=None):
-        # TODO verif la suppression de manytomany
-        self.get_object().remove_contributor(request.data['contributor'])
-        return Response(status=status.HTTP_202_ACCEPTED)
+        self.get_object().contributors.remove(request.data['contributor'])
+        return Response()
 
     def get_queryset(self):
         queryset = Project.objects.all()
