@@ -48,20 +48,23 @@ class IssueSerializer(PostSerializer):
     class Meta:
         model = Issue
         fields = '__all__'
-        read_only_fields = ("author", "id")
+        read_only_fields = ('author', 'id', 'project')
 
-    def create(self, validated_data):
+    def create(self, validated_data, author):
+
+        if validated_data['assigned_to'] == 0:
+            validated_data['assigned_to'] = None
 
         issue = Issue.objects.create(
             title=validated_data["title"],
             description=validated_data["description"],
             status=validated_data["status"],
             priority=validated_data["priority"],
-            assigned=validated_data["assigned"],
+            assigned_to=validated_data["assigned_to"],
             tag=validated_data["tag"],
             project=validated_data["project"],
 
-            author=self.set_user(),
+            author=author,
         )
 
         issue.save()

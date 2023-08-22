@@ -1,13 +1,13 @@
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.response import Response
 from rest_framework.decorators import action
-from rest_framework import status
 
 from authentication.permissions import (
     IsAuthenticated,
     )
 from api.permissions import (
-    ProjectPermissions
+    ProjectPermissions,
+    IssuePermissions
 )
 
 from api.models import Project, Issue, Comment
@@ -44,6 +44,28 @@ class ProjectViewset(ModelViewSet):
         self.get_object().contributors.remove(request.data['contributor'])
         return Response()
 
+    @action(methods=['patch'],
+            detail=True,
+            url_name='add_issue',
+            serializer_class=IssueSerializer,
+            )
+    def add_issue(self, request, pk):
+        request.data['project'] = self.get_object()
+        serializer = IssueSerializer()
+        serializer.create(request.data, request.user)
+        return Response()
+
+    @action(methods=['get'],
+            detail=True,
+            url_name='get_issues',
+            url_path='get_issues',
+            serializer_class=IssueSerializer,
+            )
+    def get_project_issues(self, request, pk):
+        queryset = Issue.objects.filter(project=self.get_object())
+        serializer = IssueSerializer(queryset, many=True)
+        return Response(serializer.data)
+
     def get_queryset(self):
         queryset = Project.objects.all()
         return queryset
@@ -51,7 +73,16 @@ class ProjectViewset(ModelViewSet):
 
 class IssueViewset(ModelViewSet):
 
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated, IssuePermissions]
+
+    # la création d'une issue depend du projet, pour faciliter les permissions
+    # et l'attribution aux contributeurs
+    http_method_names = ['get', 'put', 'patch', 'delete']
+
+    # def get_serializer_class(self):
+    #     if self.request.method in ['put']:
+    #         return CategorieSerializer
+    #     return CategorieFormSerializer
 
     serializer_class = IssueSerializer
 

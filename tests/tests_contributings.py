@@ -1,10 +1,8 @@
 from django.urls import reverse_lazy
 
-from api.views import ProjectViewset as view
+# from api.views import ProjectViewset as view
 
 from .tests_datas_setup import TestSetupAPITestCase
-
-from rest_framework import routers
 
 # Mise en place des datas pour test
 class ApiAPITestCase(TestSetupAPITestCase):

@@ -4,13 +4,18 @@ from rest_framework.test import APIClient
 
 from authentication.models import User
 
+from django.contrib.auth import get_user_model
+
+
 from api.models import (
     Project,
-    Contributing
+    Contributing,
+    Issue
     )
 
 
 # Mise en place des datas pour test
+
 class TestSetupAPITestCase(APITestCase):
 
     @classmethod
@@ -18,6 +23,9 @@ class TestSetupAPITestCase(APITestCase):
         cls.client = APIClient()
 
         # Création de deux users
+        UserModel = get_user_model()
+        cls.zeus = UserModel.objects.create_superuser('Zeus', 'admin@oc.drf', 'olympe')
+
         cls.hector = User.objects.create(
             username='hector',
             password='passwordTest',
@@ -54,6 +62,19 @@ class TestSetupAPITestCase(APITestCase):
             contributor=cls.ulysse,
             project=cls.project_1
         )
+
+        # Creation d'un issue
+        cls.issue_1 = Issue.objects.create(
+            author=cls.ulysse,
+            title='Artemis semble em colère',
+            description='Agamemnon l\'a provoquée',
+            status='TD',
+            priority='MD',
+            assigned_to=cls.achille,
+            tag='TAS',
+            project=cls.project_1
+        )
+
 
     @classmethod
     def check_in_terminal(self, items):

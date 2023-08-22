@@ -49,6 +49,7 @@ class Contributing(models.Model):
 
 
 class Issue(models.Model):
+
     STATUS_CHOICES = [
         ('TD', 'To do'),
         ('PR', 'In progress'),
@@ -58,7 +59,6 @@ class Issue(models.Model):
         ('LO', 'Low'),
         ('MD', 'Medium'),
         ('HI', 'High'),
-
     ]
     TAG_CHOICES = [
         ('BUG', 'Bug'),
@@ -82,16 +82,17 @@ class Issue(models.Model):
         choices=PRIORITY_CHOICES,
         null=False
     )
-    assigned_to = models.ForeignKey(
-        'authentication.User',
-        on_delete=models.CASCADE,
-        null=True)
     tag = models.CharField(
         max_length=3,
         choices=TAG_CHOICES,
         null=False
     )
     project = models.ForeignKey('Project', on_delete=models.CASCADE)
+    assigned_to = models.ForeignKey(
+        'authentication.User',
+        on_delete=models.CASCADE,
+        related_name='has_as_assigned',
+        null=True)
     created_time = models.DateTimeField(auto_now_add=True)
 
 
