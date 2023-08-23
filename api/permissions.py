@@ -1,6 +1,6 @@
 from rest_framework.permissions import BasePermission
 
-from api.models import Project, Contributing
+from api.models import Project
 
 
 class IsProjectContributor():
@@ -16,6 +16,7 @@ class ProjectPermissions(BasePermission):
             return request.user.is_authenticated
         elif view.action in [
                 'retrieve',
+                # 'add_issue',
                 'get_project_issues'
                 ]:
             return request.user in list(obj.contributors.all())

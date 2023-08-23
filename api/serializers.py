@@ -47,33 +47,13 @@ class ContributorSerializer(ModelSerializer):
 
 class IssueSerializer(PostSerializer):
 
-    def validate(self, data):
-
-        # let a null possibility
-        if data['assigned_to'] == 0 or data['assigned_to'] == None:
-            data['assigned_to'] = None
-            return data
-
-        else:
-            # assigned to an existant user
-            try:
-                user = User.objects.get(id=data['assigned_to'])
-            except User.DoesNotExist:
-                raise serializers.ValidationError(
-                    'L\'assignation a échoué: cet utilisateur n\'existe pas.'
-                )
-
-            # assigned to a non contributor
-            project = Project.objects.get(id=data['project'])
-            if user not in project.contributors.all():
-                raise serializers.ValidationError(
-                    'L\'assignation a échoué: l\'utilisateur doit être\
-                          un contributeur du projet.'
-                )
-
-        # data['author'] = self.set_user()
-
-        return data
+    # S'assurer que l'issue est attribuée à un contributeur
+    def validate_assigned_to(self, value):
+        if value:
+            project = Project.objects.get(id=self.initial_data['project'])
+            if value not in project.contributors.all():
+                raise serializers.ValidationError('Vous ne pouvez assigner une issue qu\'à un contributeur.')
+        return value
 
     class Meta:
         model = Issue
@@ -81,21 +61,8 @@ class IssueSerializer(PostSerializer):
         read_only_fields = ('author', 'id')
 
     def create(self, validated_data):
-
-        issue = Issue.objects.create(
-            title=validated_data['title'],
-            description=validated_data['description'],
-            status=validated_data['status'],
-            priority=validated_data['priority'],
-            assigned_to=validated_data['assigned_to'],
-            tag=validated_data['tag'],
-            project=validated_data['project'],
-            author=self.set_user(),
-        )
-
-        issue.save()
-
-        return issue
+        validated_data['author'] = self.set_user()
+        return super(IssueSerializer, self).create(validated_data)
 
 
 class CommentSerializer(ModelSerializer):

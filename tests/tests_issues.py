@@ -22,11 +22,12 @@ class IssueTestCases(ApiAPITestCase):
             'priority': 'LO',
             'tag': 'BUG',
             'project': self.project_1.id,
-            'assigned_to': 0
+            'assigned_to': '' # Ecrire null en toute lettre
         }
         self.client.force_authenticate(user=self.achille)
         response = self.client.post(url, post_datas, format='json')
-        self.assertEqual(response.status_code, 200)  # 200 OK
+        self.check_in_terminal([response.json()])
+        self.assertEqual(response.status_code, 201)  # 201 Created
 
     #     # Assign to inexistant user
     #     post_datas['title'] = 'test_issue_2'

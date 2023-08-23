@@ -92,7 +92,8 @@ class Issue(models.Model):
         'authentication.User',
         on_delete=models.CASCADE,
         related_name='has_as_assigned',
-        null=True)
+        null=True,
+        blank=True)
     created_time = models.DateTimeField(auto_now_add=True)
 
 

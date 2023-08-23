@@ -6,8 +6,6 @@ from authentication.permissions import (
     IsAuthenticated,
     )
 
-from authentication.models import User
-
 from api.permissions import (
     ProjectPermissions,
     IssuePermissions
@@ -46,6 +44,22 @@ class ProjectViewset(ModelViewSet):
         self.get_object().contributors.remove(request.data['contributor'])
         return Response()
 
+    # @action(methods=['patch'],
+    #         detail=True,
+    #         url_name='add_issue',
+    #         serializer_class=IssueSerializer,
+    #         )
+    # def add_issue(self, request, pk):
+    #     project = self.get_object()
+    #     request.data['project'] = project
+
+    #     issueSerializer = IssueSerializer(data=request.data)
+    #     if issueSerializer.is_valid():
+    #     # print(request.data)
+    #         issueSerializer.create(request.data)
+    #     # issueSerializer.save()
+    #     return Response()
+
     @action(methods=['get'],
             detail=True,
             url_name='get_issues',
@@ -67,13 +81,6 @@ class IssueViewset(ModelViewSet):
     permission_classes = [IsAuthenticated, IssuePermissions]
 
     serializer_class = IssueSerializer
-
-    def create(self, request, *args, **kwargs):
-        serializer = self.get_serializer(data=request.data)
-        serializer.validate(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        self.perform_create(serializer)
-        return Response()
 
     def get_queryset(self):
         queryset = Issue.objects.all()
