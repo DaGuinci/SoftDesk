@@ -16,7 +16,6 @@ class ProjectPermissions(BasePermission):
             return request.user.is_authenticated
         elif view.action in [
                 'retrieve',
-                'add_issue',
                 'get_project_issues'
                 ]:
             return request.user in list(obj.contributors.all())
@@ -34,7 +33,14 @@ class ProjectPermissions(BasePermission):
 class IssuePermissions(BasePermission, IsProjectContributor):
     # message = 'You must be the owner of this object.'
     def has_permission(self, request, view):
-        if view.action == 'list':
+        if view.action == 'create':
+            project = Project.objects.get(id=request.data['project'])
+            if not request.user in project.contributors.all():
+                self.message = 'Permissions refusée: vous devez être contributeur du projet'
+                return False
+            else:
+                return True
+        elif view.action == 'list':
             return request.user.is_authenticated and request.user.is_superuser
         else:
             return view.action in ['retrieve', 'update', 'partial_update', 'delete']

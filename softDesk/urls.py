@@ -62,7 +62,6 @@ apiRouter.register('comment', CommentViewset, basename='comment')
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('auth/register/', RegisterView.as_view(), name='auth_register'),
-    # path('api-auth/', include('rest_framework.urls')),
     path('auth/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('auth/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path('auth/', include(authRouter.urls)),

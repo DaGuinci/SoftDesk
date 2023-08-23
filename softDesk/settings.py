@@ -165,6 +165,7 @@ SPECTACULAR_SETTINGS = {
 }
 
 SIMPLE_JWT = {
-    'ACCESS_TOKEN_LIFETIME': datetime.timedelta(minutes=5),
+    # TODO repasser le jeton à 5
+    'ACCESS_TOKEN_LIFETIME': datetime.timedelta(minutes=45),
     'REFRESH_TOKEN_LIFETIME': datetime.timedelta(days=1),
 }

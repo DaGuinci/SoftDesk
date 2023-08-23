@@ -1,6 +1,8 @@
 from rest_framework.serializers import ModelSerializer
+from rest_framework import serializers
 
 from api.models import (
+    User,
     Project,
     Contributing,
     Issue,
@@ -45,26 +47,50 @@ class ContributorSerializer(ModelSerializer):
 
 class IssueSerializer(PostSerializer):
 
+    def validate(self, data):
+
+        # let a null possibility
+        if data['assigned_to'] == 0 or data['assigned_to'] == None:
+            data['assigned_to'] = None
+            return data
+
+        else:
+            # assigned to an existant user
+            try:
+                user = User.objects.get(id=data['assigned_to'])
+            except User.DoesNotExist:
+                raise serializers.ValidationError(
+                    'L\'assignation a échoué: cet utilisateur n\'existe pas.'
+                )
+
+            # assigned to a non contributor
+            project = Project.objects.get(id=data['project'])
+            if user not in project.contributors.all():
+                raise serializers.ValidationError(
+                    'L\'assignation a échoué: l\'utilisateur doit être\
+                          un contributeur du projet.'
+                )
+
+        # data['author'] = self.set_user()
+
+        return data
+
     class Meta:
         model = Issue
         fields = '__all__'
-        read_only_fields = ('author', 'id', 'project')
+        read_only_fields = ('author', 'id')
 
-    def create(self, validated_data, author):
-
-        if validated_data['assigned_to'] == 0:
-            validated_data['assigned_to'] = None
+    def create(self, validated_data):
 
         issue = Issue.objects.create(
-            title=validated_data["title"],
-            description=validated_data["description"],
-            status=validated_data["status"],
-            priority=validated_data["priority"],
-            assigned_to=validated_data["assigned_to"],
-            tag=validated_data["tag"],
-            project=validated_data["project"],
-
-            author=author,
+            title=validated_data['title'],
+            description=validated_data['description'],
+            status=validated_data['status'],
+            priority=validated_data['priority'],
+            assigned_to=validated_data['assigned_to'],
+            tag=validated_data['tag'],
+            project=validated_data['project'],
+            author=self.set_user(),
         )
 
         issue.save()
