@@ -8,7 +8,8 @@ from authentication.permissions import (
 
 from api.permissions import (
     ProjectPermissions,
-    IssuePermissions
+    IssuePermissions,
+    CommentPermissions
 )
 from api.models import Project, Issue, Comment
 from api.serializers import (
@@ -82,6 +83,17 @@ class IssueViewset(ModelViewSet):
 
     serializer_class = IssueSerializer
 
+    @action(methods=['get'],
+            detail=True,
+            url_name='get_comments',
+            url_path='get_comments',
+            serializer_class=CommentSerializer,
+            )
+    def get_issue_comments(self, request, pk):
+        queryset = Comment.objects.filter(issue=self.get_object())
+        serializer = CommentSerializer(queryset, many=True)
+        return Response(serializer.data)
+
     def get_queryset(self):
         queryset = Issue.objects.all()
         return queryset
@@ -89,7 +101,7 @@ class IssueViewset(ModelViewSet):
 
 class CommentViewset(ModelViewSet):
 
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated, CommentPermissions]
 
     serializer_class = CommentSerializer
 

@@ -10,7 +10,8 @@ from django.contrib.auth import get_user_model
 from api.models import (
     Project,
     Contributing,
-    Issue
+    Issue,
+    Comment
     )
 
 
@@ -75,6 +76,12 @@ class TestSetupAPITestCase(APITestCase):
             project=cls.project_1
         )
 
+        # Creation d'un comment
+        cls.comment_1 = Comment.objects.create(
+            author=cls.achille,
+            description='Des nouvelles de Patrocle ?',
+            issue=cls.issue_1,
+        )
 
     @classmethod
     def check_in_terminal(self, items):

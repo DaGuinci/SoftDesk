@@ -12,7 +12,7 @@ from api.models import (
 class PostSerializer(ModelSerializer):
 
     def set_user(self):
-        request = self.context.get("request", None)
+        request = self.context.get('request', None)
         if request:
             return request.user
 
@@ -22,20 +22,12 @@ class ProjectSerializer(PostSerializer):
     class Meta:
         model = Project
         fields = '__all__'
-        read_only_fields = ("author", "id")
+        read_only_fields = ['author']
 
     def create(self, validated_data):
+        validated_data['author'] = self.set_user()
 
-        project = Project.objects.create(
-            title=validated_data["title"],
-            description=validated_data["description"],
-            type=validated_data["type"],
-            author=self.set_user(),
-        )
-
-        project.save()
-
-        return project
+        return super(ProjectSerializer, self).create(validated_data)
 
 
 class ContributorSerializer(ModelSerializer):
@@ -70,23 +62,14 @@ class CommentSerializer(ModelSerializer):
     class Meta:
         model = Comment
         fields = '__all__'
+        read_only_fields = ['author']
 
     def set_user(self):
-        request = self.context.get("request", None)
+        request = self.context.get('request', None)
         if request:
             return request.user
 
     def create(self, validated_data):
+        validated_data['author'] = self.set_user()
 
-        comment = Issue.objects.create(
-            title=validated_data["title"],
-            description=validated_data["description"],
-            uuid=validated_data["uuid"],
-            issue=validated_data["issue"],
-
-            author=self.set_user(),
-        )
-        # Vrefifier que l'user est bien contributeur
-        comment.save()
-
-        return comment
+        return super(CommentSerializer, self).create(validated_data)

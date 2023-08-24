@@ -1,10 +1,7 @@
 from django.core.management.base import BaseCommand
-from django.contrib.auth import get_user_model, authenticate, login
-from requests import request
-# from django.contrib.auth.models import get_user_model
+from django.contrib.auth import get_user_model
 
-from api.models import Project, Contributing
-from api.serializers import ProjectSerializer
+from api.models import Project, Contributing, Issue, Comment
 
 UserModel = get_user_model()
 
@@ -46,7 +43,6 @@ class Command(BaseCommand):
         for user in USERS:
             UserModel.objects.create_user(username=user['username'], password=user['password'])
 
-        # exit()
         achille = UserModel.objects.get(username='Achille')
         hector = UserModel.objects.get(username='Hector')
         ulysse = UserModel.objects.get(username='Ulysse')
@@ -69,6 +65,20 @@ class Command(BaseCommand):
         # Ajout d'un contributeur
         first_project.contributors.add(ulysse)
 
+        # Création d'une issue
+        first_issue = Issue.objects.create(
+            author=ulysse,
+            title='Artemis semble em colère',
+            description='Agamemnon l\'a provoquée',
+            status='TD',
+            priority='MD',
+            assigned_to=achille,
+            tag='TAS',
+            project=first_project
+        )
+
+
+        # Création d'un superuser
         UserModel.objects.create_superuser(ADMIN_ID, 'admin@oc.drf', ADMIN_PASSWORD)
 
         self.stdout.write(self.style.SUCCESS("All Done !"))
