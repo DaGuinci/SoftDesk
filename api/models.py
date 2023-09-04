@@ -23,12 +23,8 @@ class Project(models.Model):
     contributors = models.ManyToManyField(
         User,
         through='Contributing',
-        related_name='contributors')
-
-    class Meta:
-        constraints = [
-            models.UniqueConstraint(fields=['author', 'title'], name='unique project')
-        ]
+        related_name='contributors'
+        )
 
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)

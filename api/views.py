@@ -1,3 +1,5 @@
+from django.shortcuts import get_object_or_404
+
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.response import Response
 from rest_framework.decorators import action
@@ -5,12 +7,14 @@ from rest_framework.decorators import action
 from authentication.permissions import (
     IsAuthenticated,
     )
+from authentication.models import User
 
 from api.permissions import (
     ProjectPermissions,
     IssuePermissions,
     CommentPermissions
 )
+
 from api.models import Project, Issue, Comment
 from api.serializers import (
     ProjectSerializer,
@@ -35,8 +39,12 @@ class ProjectViewset(ModelViewSet):
             serializer_class=ContributorSerializer,
             )
     def add_contributor(self, request, pk, contributor=None):
-        self.get_object().contributors.add(request.data['contributor'])
-        return Response()
+        new_contributor = get_object_or_404(User, pk=request.data['contributor'])
+        if new_contributor not in self.get_object().contributors.all():
+            self.get_object().contributors.add(request.data['contributor'])
+            return Response('Contributeur ajouté')
+        else:
+            return Response('Cet utilisateur est déjà contributeur du projet.')
 
     @action(methods=['patch'],
             detail=True,
@@ -45,7 +53,7 @@ class ProjectViewset(ModelViewSet):
             )
     def remove_contributor(self, request, pk, contributor=None):
         self.get_object().contributors.remove(request.data['contributor'])
-        return Response()
+        return Response('Contributeur supprimé')
 
     @action(methods=['get'],
             detail=True,
