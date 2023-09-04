@@ -24,6 +24,8 @@ class ProjectViewset(ModelViewSet):
 
     permission_classes = [IsAuthenticated, ProjectPermissions]
 
+    http_method_names = ['get', 'post', 'patch', 'delete']
+
     serializer_class = ProjectSerializer
 
     @action(methods=['patch'],

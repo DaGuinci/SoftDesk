@@ -19,7 +19,11 @@ class PostSerializer(ModelSerializer):
 
 class ProjectSerializer(PostSerializer):
 
-    contributors = serializers.StringRelatedField(many=True)
+    contributors = serializers.SlugRelatedField(
+        many=True,
+        read_only=True,
+        slug_field='username'
+     )
     author = serializers.StringRelatedField(many=False)
 
     class Meta:
@@ -33,7 +37,7 @@ class ProjectSerializer(PostSerializer):
             'type',
             'created_time'
         ]
-        read_only_fields = ['author']
+        read_only_fields = ['author', 'contributors']
 
     def create(self, validated_data):
         validated_data['author'] = self.set_user()

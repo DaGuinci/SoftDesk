@@ -26,6 +26,9 @@ class ApiAPITestCase(TestSetupAPITestCase):
             )
         if test == 'updated_project':
             contributors = list(self.project_1.contributors.all())
+            contributors_names = []
+            for contributor in contributors:
+                contributors_names.append(contributor.username)
             return (
                 {
                     'id': self.project_1.id,
@@ -33,7 +36,7 @@ class ApiAPITestCase(TestSetupAPITestCase):
                     'description': 'Tuer Hector en faisant attention à mon talon',
                     'type': 'BE',
                     'author': self.project_1.author.username,
-                    'contributors': contributors
+                    'contributors': contributors_names
                 }
             )
 
@@ -108,18 +111,19 @@ class ProjectTestCases(ApiAPITestCase):
             'description': 'Tuer Hector en faisant attention à mon talon',
             'type': 'BE'
         }
+
         # Non authentifié
-        response = self.client.put(url, post_datas)
+        response = self.client.patch(url, post_datas)
         self.assertEqual(response.status_code, 401)  # 401 Unauthorized
 
         # Authentifié par autre user, non contributeur, non auteur
         self.client.force_authenticate(user=self.hector)
-        response = self.client.put(url, post_datas)
+        response = self.client.patch(url, post_datas)
         self.assertEqual(response.status_code, 403)  # 403 Forbidden
 
         # Authentifié comme auteur
         self.client.force_authenticate(user=self.achille)
-        response = self.client.put(url, post_datas)
+        response = self.client.patch(url, post_datas)
         response.json().pop('created_time')
         self.assertEqual(response.status_code, 200)  # 200 OK
         self.assertEqual(response.json(),

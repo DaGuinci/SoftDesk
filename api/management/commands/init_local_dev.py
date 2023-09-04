@@ -54,7 +54,7 @@ class Command(BaseCommand):
 
         Project.objects.create(
             title='Survivre à l\'attaque des Grecs',
-            description='Résister aux Grecs, mais accetper ;eurs éventuels cadeaux.',
+            description='Résister aux Grecs.',
             type='IO',
             author_id=hector.id
         )
