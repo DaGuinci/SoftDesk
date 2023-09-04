@@ -15,14 +15,19 @@ class UserSerializer(ModelSerializer):
             'username',
             'age',
             'can_be_contacted',
-            'can_data_be_shared'
+            'can_data_be_shared',
             ]
+        extra_kwargs = {"password": {"write_only": True}}
+
+    def __str__(self):
+        return self.username
+
+    # def __repr__(self):
+    #     return self.username
+
 
 
 class RegisterSerializer(ModelSerializer):
-
-    # password = serializers.CharField(write_only=True, required=True, validators=[validate_password])
-    # password2 = serializers.CharField(write_only=True, required=True)
 
     class Meta:
         model = User

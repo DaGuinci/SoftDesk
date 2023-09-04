@@ -19,6 +19,9 @@ class PostSerializer(ModelSerializer):
 
 class ProjectSerializer(PostSerializer):
 
+    contributors = serializers.StringRelatedField(many=True)
+    author = serializers.StringRelatedField(many=False)
+
     class Meta:
         model = Project
         fields = '__all__'

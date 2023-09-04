@@ -4,16 +4,8 @@ from authentication.models import User
 from authentication.serializers import UserSerializer, RegisterSerializer
 from authentication.permissions import UserPermission
 
+from rest_framework.response import Response
 from rest_framework.generics import CreateAPIView
-
-
-class RegisterView(CreateAPIView):
-    """Ajoute un utilisateur
-    L'age doit être de 15 ans minimum."""
-
-    queryset = User.objects.all()
-
-    serializer_class = RegisterSerializer
 
 
 class UserViewset(ModelViewSet):
@@ -26,3 +18,12 @@ class UserViewset(ModelViewSet):
 
     def get_queryset(self):
         return User.objects.all()
+
+
+class RegisterView(CreateAPIView):
+    """Ajoute un utilisateur
+    L'age doit être de 15 ans minimum."""
+
+    queryset = User.objects.all()
+
+    serializer_class = RegisterSerializer
