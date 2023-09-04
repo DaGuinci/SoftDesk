@@ -24,9 +24,6 @@ USERS = [
     },
 ]
 
-ADMIN_ID = 'admin-oc'
-ADMIN_PASSWORD = 'password-oc'
-
 
 class Command(BaseCommand):
 
@@ -50,14 +47,14 @@ class Command(BaseCommand):
         # Création de projets
         first_project = Project.objects.create(
             title='Prendre Troie',
-            description='Récupérer Hélène',
+            description='Récupérer Hélène.',
             type='FE',
             author_id=achille.id
         )
 
         Project.objects.create(
-            title='Survivre',
-            description='Résister aux Grecs',
+            title='Survivre à l\'attaque des Grecs',
+            description='Résister aux Grecs, mais accetper ;eurs éventuels cadeaux.',
             type='IO',
             author_id=hector.id
         )
@@ -65,8 +62,20 @@ class Command(BaseCommand):
         # Ajout d'un contributeur
         first_project.contributors.add(ulysse)
 
-        # Création d'une issue
+
+        # Création d'issues
         first_issue = Issue.objects.create(
+            author=achille,
+            title='Patrocle ne revient pas',
+            description='Quelqu\'un l\'a vu depuis ce matin ?',
+            status='TD',
+            priority='MD',
+            assigned_to=achille,
+            tag='TAS',
+            project=first_project
+        )
+
+        Issue.objects.create(
             author=ulysse,
             title='Artemis semble em colère',
             description='Agamemnon l\'a provoquée',
@@ -77,8 +86,66 @@ class Command(BaseCommand):
             project=first_project
         )
 
+        Issue.objects.create(
+            author=ulysse,
+            title='Construire un cheval en bois',
+            description='Si possible assez grand:',
+            status='TD',
+            priority='MD',
+            assigned_to=achille,
+            tag='TAS',
+            project=first_project
+        )
+
+        Issue.objects.create(
+            author=ulysse,
+            title='Construire un cheval en bois',
+            description='Si possible assez grand.',
+            status='TD',
+            priority='MD',
+            assigned_to=achille,
+            tag='TAS',
+            project=first_project
+        )
+
+        Issue.objects.create(
+            author=ulysse,
+            title='Venger Patrocle',
+            description='Voir avec Hector.',
+            status='TD',
+            priority='MD',
+            assigned_to=achille,
+            tag='TAS',
+            project=first_project
+        )
+
+        # Création de commentaires
+        Comment.objects.create(
+            author=ulysse,
+            description='Il n\'avait pas rendez-vous avec Hector, ce matin ?',
+            issue=first_issue
+        )
+
+        Comment.objects.create(
+            author=achille,
+            description='C\'est bien ce qui m\'inquiète. Hector est un peu soupe au lait.',
+            issue=first_issue
+        )
+
+        Comment.objects.create(
+            author=ulysse,
+            description='Non, pas de souci, il aboie plus qu\'il ne mord. Patrocle sera de retour pour le déjeuner.',
+            issue=first_issue
+        )
+
+        Comment.objects.create(
+            author=achille,
+            description='Tu as raison. Surtout qu\'aujourd\'hui c\'est des frites à la cantine, il ne raterait pas ça.',
+            issue=first_issue
+        )
 
         # Création d'un superuser
-        UserModel.objects.create_superuser(ADMIN_ID, 'admin@oc.drf', ADMIN_PASSWORD)
+        # UserModel.objects.create_superuser('Zeus', 'admin@oc.drf', 'string')
+        UserModel.objects.create_superuser(username='Zeus', password='string')
 
         self.stdout.write(self.style.SUCCESS("All Done !"))

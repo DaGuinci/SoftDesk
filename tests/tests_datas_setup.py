@@ -25,7 +25,7 @@ class TestSetupAPITestCase(APITestCase):
 
         # Création de deux users
         UserModel = get_user_model()
-        cls.zeus = UserModel.objects.create_superuser('Zeus', 'admin@oc.drf', 'olympe')
+        cls.zeus = UserModel.objects.create_superuser('Zeus', 'admin@oc.drf', 'string')
 
         cls.hector = User.objects.create(
             username='hector',

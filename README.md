@@ -26,6 +26,16 @@ source env/bin/activate
 pip install -r requirements.txt
 ```
 
+* Créer une base de données
+``` bash
+python manage.py migrate
+```
+
+* Init local dev
+``` bash
+python manage.py init_local_dev
+```
+
 ## Exécution
 
 * Lancer le serveur
@@ -80,15 +90,13 @@ python manage.py migrate
   - [x] Create first endpoint
   - [x] Install drf-spectacular
   - [x] Rewrite contributor en action 'patch' de project
-  - [ ] Rewrite register en action 'create' du user
-  - [ ] Code a get contributors endpoint ?
 
 - [ ] Optimize project
   - [ ] Check optimization project document
   - [ ] Check OWASP
 
 - [ ] Test project
-  - [ ] Write tests
+  - [x] Write tests
   - [ ] Test readme local new install
 
 - [ ] Clean project
@@ -96,23 +104,24 @@ python manage.py migrate
   - [ ] Check token duration
   - [ ] Remove django-extensions package
 
-- [ ] Ask to client
-
-
 ## Initialisation des données
 
 ### Utilisateurs
 
-* admin-oc
-password: password-oc
-
-* string
+* Superuser
+username: Zeus
 password: string
 
-* John
+* User :
+username: Achille
 password: string
 
-* Ringo
+* User :
+username: Ulysse
+password: string
+
+* User :
+username: Hector
 password: string
 
 ### Projets

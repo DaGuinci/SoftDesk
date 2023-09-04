@@ -103,7 +103,7 @@ class UserTestCases(AuthAPITestCase):
 
         # test methode post
         response = self.client.post(url, post_data, format='json')
-        self.assertEqual(response.status_code, 405)  # 405 Method Not Allowed
+        self.assertEqual(response.status_code, 401)  # 401 Unauthorized
 
         # sans authentification
         response = self.client.patch(url, post_data, format='json')
@@ -146,10 +146,21 @@ class UserTestCases(AuthAPITestCase):
     # test de l'appel de liste d'users
     def test_can_get_users_list(self):
         url = reverse_lazy('user-list')
+
+        # user non authentifié
         response = self.client.get(url)
-        ulysse = User.objects.get(username='ulysse')
+        self.assertEqual(response.status_code, 401)  # 401 Unauthorized
+
+        # user authentifié
+        self.client.force_authenticate(user=self.achille)
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 403)
+
+        # Superuser
+        self.client.force_authenticate(user=self.zeus)
+        response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
-        # self.assertEqual(
-        #     response.json(),
-        #     self.get_user_list_data([self.hector, self.achille, ulysse])
-        #     )
+        self.assertEqual(
+            response.json(),
+            self.get_user_list_data([self.zeus, self.hector, self.achille, self.ulysse])
+            )

@@ -45,22 +45,6 @@ class ProjectViewset(ModelViewSet):
         self.get_object().contributors.remove(request.data['contributor'])
         return Response()
 
-    # @action(methods=['patch'],
-    #         detail=True,
-    #         url_name='add_issue',
-    #         serializer_class=IssueSerializer,
-    #         )
-    # def add_issue(self, request, pk):
-    #     project = self.get_object()
-    #     request.data['project'] = project
-
-    #     issueSerializer = IssueSerializer(data=request.data)
-    #     if issueSerializer.is_valid():
-    #     # print(request.data)
-    #         issueSerializer.create(request.data)
-    #     # issueSerializer.save()
-    #     return Response()
-
     @action(methods=['get'],
             detail=True,
             url_name='get_issues',
