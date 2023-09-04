@@ -11,15 +11,19 @@ class IsProjectContributor():
 
 class ProjectPermissions(BasePermission):
 
+    def has_permission(self, request, view):
+        if view.action in ['list']:
+            return request.user.is_authenticated and request.user.is_superuser
+        return super().has_permission(request, view)
+
     def has_object_permission(self, request, view, obj):
         if view.action in ['create']:
             return request.user.is_authenticated
         elif view.action in [
                 'retrieve',
-                # 'add_issue',
                 'get_project_issues'
                 ]:
-            return request.user in list(obj.contributors.all())
+            return request.user in list(obj.contributors.all()) or request.user.is_superuser
         elif view.action in [
                 'update',
                 'partial_update',

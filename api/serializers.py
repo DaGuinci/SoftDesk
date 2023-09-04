@@ -24,7 +24,15 @@ class ProjectSerializer(PostSerializer):
 
     class Meta:
         model = Project
-        fields = '__all__'
+        fields = [
+            'id',
+            'title',
+            'author',
+            'description',
+            'contributors',
+            'type',
+            'created_time'
+        ]
         read_only_fields = ['author']
 
     def create(self, validated_data):
