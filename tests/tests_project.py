@@ -8,52 +8,32 @@ from .tests_datas_setup import TestSetupAPITestCase
 # Mise en place des datas pour test
 class ApiAPITestCase(TestSetupAPITestCase):
 
-    def get_project_list_data(self, projects):
-        for project in projects:
-            contributors = list(self.project_1.contributors.all())
-            project.contributors_id = []
-            for contributor in contributors:
-                project.contributors_id.append(contributor.id)
-        return [
-            {
-                'id': project.id,
-                'title': project.title,
-                'description': project.description,
-                'type': project.type,
-                'author': project.author.id,
-                'contributors': project.contributors_id
-            } for project in projects
-        ]
-
     def expected_reponses_content(self, test):
         if test == 'get_project_1':
             contributors = list(self.project_1.contributors.all())
-            contributors_id = []
+            contributors_names = []
             for contributor in contributors:
-                contributors_id.append(contributor.id)
+                contributors_names.append(contributor.username)
             return (
                 {
                     'id': self.project_1.id,
                     'title': self.project_1.title,
-                    'author': self.project_1.author.id,
+                    'author': self.project_1.author.username,
                     'description': self.project_1.description,
                     'type': self.project_1.type,
-                    'contributors': contributors_id
+                    'contributors': contributors_names
                 }
             )
         if test == 'updated_project':
             contributors = list(self.project_1.contributors.all())
-            contributors_id = []
-            for contributor in contributors:
-                contributors_id.append(contributor.id)
             return (
                 {
                     'id': self.project_1.id,
                     'title': 'Venger Patrocle',
                     'description': 'Tuer Hector en faisant attention à mon talon',
                     'type': 'BE',
-                    'author': self.project_1.author.id,
-                    'contributors': contributors_id
+                    'author': self.project_1.author.username,
+                    'contributors': contributors
                 }
             )
 
@@ -70,14 +50,14 @@ class ProjectTestCases(ApiAPITestCase):
         self.assertEqual(response.status_code, 401)  # 401 Unauthorized
 
         # Authentifié
-        # TODO Etudier le niveau de detail accessible en liste
         self.client.force_authenticate(user=self.hector)
         response = self.client.get(url)
-        for project in response.json():
-            project.pop('created_time')
-        self.assertEqual(response.status_code, 200)  # 200 OK
-        self.assertEqual(response.json(),
-                         self.get_project_list_data([self.project_1]))
+        self.assertEqual(response.status_code, 403)  # 403 Forbidden
+
+        # Superuser
+        self.client.force_authenticate(user=self.zeus)
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)  # 200 ok
 
     def test_get_project_details(self):
         url = reverse_lazy('project-detail', kwargs={'pk': self.project_1.id})
