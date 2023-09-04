@@ -25,6 +25,11 @@ class Project(models.Model):
         through='Contributing',
         related_name='contributors')
 
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(fields=['author', 'title'], name='unique project')
+        ]
+
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
         self.contributors.add(self.author)
