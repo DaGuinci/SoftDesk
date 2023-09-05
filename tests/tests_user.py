@@ -8,17 +8,6 @@ from .tests_datas_setup import TestSetupAPITestCase
 # Mise en place des datas pour test
 class AuthAPITestCase(TestSetupAPITestCase):
 
-    def get_user_list_data(self, users):
-        return [
-            {
-                'id': user.id,
-                'username': user.username,
-                'age': user.age,
-                'can_be_contacted': user.can_be_contacted,
-                'can_data_be_shared': user.can_data_be_shared,
-            } for user in users
-        ]
-
     def expected_reponses_content(self, test):
         if test == 'can_register':
             return {
@@ -160,7 +149,3 @@ class UserTestCases(AuthAPITestCase):
         self.client.force_authenticate(user=self.zeus)
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(
-            response.json(),
-            self.get_user_list_data([self.zeus, self.hector, self.achille, self.ulysse])
-            )

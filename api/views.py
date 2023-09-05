@@ -24,10 +24,12 @@ from api.serializers import (
     CommentSerializer
     )
 
+
 class StandardResultsSetPagination(PageNumberPagination):
     page_size = 3
     page_size_query_param = 'page_size'
     max_page_size = 1000
+
 
 class ProjectViewset(ModelViewSet):
 
@@ -103,7 +105,12 @@ class IssueViewset(ModelViewSet):
             )
     def get_issue_comments(self, request, pk):
         queryset = Comment.objects.filter(issue=self.get_object())
-        serializer = CommentSerializer(queryset, many=True)
+        page = self.paginate_queryset(queryset)
+        if page is not None:
+            serializer = self.get_serializer(page, many=True)
+            return self.get_paginated_response(serializer.data)
+
+        serializer = self.get_serializer(queryset, many=True)
         return Response(serializer.data)
 
     def get_queryset(self):

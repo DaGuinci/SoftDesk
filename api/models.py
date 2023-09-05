@@ -42,12 +42,6 @@ class Contributing(models.Model):
                                 on_delete=models.CASCADE,
                                 related_name='is_developed'
                                 )
-    # TODO
-    # class Meta:
-        # constraints = [
-        #     models.UniqueConstraint(fields=['contributor', 'project'], name='unique contributing')
-        # ]
-
 
 class Issue(models.Model):
 

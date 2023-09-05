@@ -88,8 +88,8 @@ class Command(BaseCommand):
 
         Issue.objects.create(
             author=ulysse,
-            title='Construire un cheval en bois',
-            description='Si possible assez grand:',
+            title='Faire rentrer nos armées dans la ville',
+            description='Trouver une astuce.',
             status='TD',
             priority='MD',
             assigned_to=achille,
@@ -100,7 +100,7 @@ class Command(BaseCommand):
         Issue.objects.create(
             author=ulysse,
             title='Construire un cheval en bois',
-            description='Si possible assez grand.',
+            description='Si possible assez grand:',
             status='TD',
             priority='MD',
             assigned_to=achille,
