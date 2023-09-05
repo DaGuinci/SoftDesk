@@ -47,7 +47,10 @@ class ProjectViewset(ModelViewSet):
             serializer_class=ContributorSerializer,
             )
     def add_contributor(self, request, pk, contributor=None):
-        new_contributor = get_object_or_404(User, pk=request.data['contributor'])
+        new_contributor = get_object_or_404(
+            User,
+            pk=request.data['contributor']
+            )
         if new_contributor not in self.get_object().contributors.all():
             self.get_object().contributors.add(request.data['contributor'])
             return Response('Contributeur ajouté')
@@ -60,13 +63,17 @@ class ProjectViewset(ModelViewSet):
             serializer_class=ContributorSerializer,
             )
     def remove_contributor(self, request, pk, contributor=None):
-        new_contributor = get_object_or_404(User, pk=request.data['contributor'])
+        new_contributor = get_object_or_404(
+            User,
+            pk=request.data['contributor']
+            )
         if new_contributor in self.get_object().contributors.all():
             self.get_object().contributors.remove(request.data['contributor'])
             return Response('Contributeur supprimé')
         else:
-            return Response('L\'utilisateur n\'est pas contributeur de ce projet.')
-
+            return Response(
+                'L\'utilisateur n\'est pas contributeur de ce projet.'
+                )
 
     @action(methods=['get'],
             detail=True,

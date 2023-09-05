@@ -43,6 +43,7 @@ class Contributing(models.Model):
                                 related_name='is_developed'
                                 )
 
+
 class Issue(models.Model):
 
     STATUS_CHOICES = [
@@ -96,5 +97,9 @@ class Comment(models.Model):
     author = models.ForeignKey('authentication.User', on_delete=models.CASCADE)
     description = models.TextField(blank=True)
     issue = models.ForeignKey('Issue', on_delete=models.CASCADE)
-    uuid = models.UUIDField(primary_key=False, default=uuid.uuid4, editable=False)
+    uuid = models.UUIDField(
+        primary_key=False,
+        default=uuid.uuid4,
+        editable=False
+        )
     created_time = models.DateTimeField(auto_now_add=True)

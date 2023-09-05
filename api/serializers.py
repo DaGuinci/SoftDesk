@@ -1,6 +1,5 @@
 from rest_framework.serializers import ModelSerializer
 from rest_framework import serializers
-from rest_framework.validators import UniqueTogetherValidator
 
 from api.models import (
     Project,
@@ -59,7 +58,9 @@ class IssueSerializer(PostSerializer):
         if value:
             project = Project.objects.get(id=self.initial_data['project'])
             if value not in project.contributors.all():
-                raise serializers.ValidationError('Vous ne pouvez assigner une issue qu\'à un contributeur.')
+                raise serializers.ValidationError(
+                    'Vous ne pouvez assigner une issue qu\'à un contributeur.'
+                    )
         return value
 
     class Meta:

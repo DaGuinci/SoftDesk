@@ -38,7 +38,10 @@ class Command(BaseCommand):
 
         # Création des utilisateurs
         for user in USERS:
-            UserModel.objects.create_user(username=user['username'], password=user['password'])
+            UserModel.objects.create_user(
+                username=user['username'],
+                password=user['password']
+                )
 
         achille = UserModel.objects.get(username='Achille')
         hector = UserModel.objects.get(username='Hector')
@@ -61,7 +64,6 @@ class Command(BaseCommand):
 
         # Ajout d'un contributeur
         first_project.contributors.add(ulysse)
-
 
         # Création d'issues
         first_issue = Issue.objects.create(
@@ -128,19 +130,22 @@ class Command(BaseCommand):
 
         Comment.objects.create(
             author=achille,
-            description='C\'est bien ce qui m\'inquiète. Hector est un peu soupe au lait.',
+            description='C\'est bien ce qui m\'inquiète.\
+                Hector est un peu soupe au lait.',
             issue=first_issue
         )
 
         Comment.objects.create(
             author=ulysse,
-            description='Non, pas de souci, il aboie plus qu\'il ne mord. Patrocle sera de retour pour le déjeuner.',
+            description='Non, pas de souci, il aboie plus qu\'il ne mord.\
+                Patrocle sera de retour pour le déjeuner.',
             issue=first_issue
         )
 
         Comment.objects.create(
             author=achille,
-            description='Tu as raison. Surtout qu\'aujourd\'hui c\'est des frites à la cantine, il ne raterait pas ça.',
+            description='Tu as raison. Surtout qu\'aujourd\'hui c\'est des\
+                frites à la cantine, il ne raterait pas ça.',
             issue=first_issue
         )
 

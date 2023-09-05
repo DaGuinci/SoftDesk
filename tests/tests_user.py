@@ -1,7 +1,5 @@
 from django.urls import reverse_lazy
 
-from authentication.models import User
-
 from .tests_datas_setup import TestSetupAPITestCase
 
 
@@ -22,11 +20,11 @@ class AuthAPITestCase(TestSetupAPITestCase):
             return {'detail': "Informations d'authentification non fournies."}
         if test == 'modified_profile':
             return {
-            'username': 'hector',
-            'age': 27,
-            'can_be_contacted': True,
-            'can_data_be_shared': False
-            }
+                'username': 'hector',
+                'age': 27,
+                'can_be_contacted': True,
+                'can_data_be_shared': False
+                }
         return None
 
 

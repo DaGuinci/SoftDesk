@@ -21,7 +21,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-6faq17jt=db1-gyh=w7$&r0jllx2dlvm7ywhj&a$uta-zuf^fb'
+SECRET_KEY = (
+    'django-insecure-6faq17jt=db1-gyh=w7$&r0jllx2dlvm7ywhj&a$uta-zuf^fb'
+    )
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -160,7 +162,8 @@ SPECTACULAR_SETTINGS = {
         "persistAuthorization": True,
         "displayOperationId": True,
     },
-    # Activé pour montrer sur Swagger que les champs des requêtes PATCH sont tous optionnel
+    # Activé pour montrer sur Swagger que les champs
+    # des requêtes PATCH sont tous optionnel
     'COMPONENT_SPLIT_PATCH': True,
     'COMPONENT_SPLIT_REQUEST': True,
 }
