@@ -3,6 +3,7 @@ from django.shortcuts import get_object_or_404
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.response import Response
 from rest_framework.decorators import action
+from rest_framework.pagination import PageNumberPagination
 
 from authentication.permissions import (
     IsAuthenticated,
@@ -23,10 +24,15 @@ from api.serializers import (
     CommentSerializer
     )
 
+class StandardResultsSetPagination(PageNumberPagination):
+    page_size = 3
+    page_size_query_param = 'page_size'
+    max_page_size = 1000
 
 class ProjectViewset(ModelViewSet):
 
     permission_classes = [IsAuthenticated, ProjectPermissions]
+    pagination_class = StandardResultsSetPagination
 
     http_method_names = ['get', 'post', 'patch', 'delete']
 
@@ -68,7 +74,13 @@ class ProjectViewset(ModelViewSet):
             )
     def get_project_issues(self, request, pk):
         queryset = Issue.objects.filter(project=self.get_object())
-        serializer = IssueSerializer(queryset, many=True)
+
+        page = self.paginate_queryset(queryset)
+        if page is not None:
+            serializer = self.get_serializer(page, many=True)
+            return self.get_paginated_response(serializer.data)
+
+        serializer = self.get_serializer(queryset, many=True)
         return Response(serializer.data)
 
     def get_queryset(self):
@@ -79,6 +91,7 @@ class ProjectViewset(ModelViewSet):
 class IssueViewset(ModelViewSet):
 
     permission_classes = [IsAuthenticated, IssuePermissions]
+    pagination_class = StandardResultsSetPagination
 
     serializer_class = IssueSerializer
 
@@ -101,6 +114,7 @@ class IssueViewset(ModelViewSet):
 class CommentViewset(ModelViewSet):
 
     permission_classes = [IsAuthenticated, CommentPermissions]
+    pagination_class = StandardResultsSetPagination
 
     serializer_class = CommentSerializer
 
