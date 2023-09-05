@@ -8,22 +8,28 @@
 git clone git@github.com:DaGuinci/softDesk.git
 ```
 
-* Créer environnement virtuel :
+* Entrer dans le repertoire
 
 ``` bash
-python -m venv env
+cd softDesk/
+```
+
+* Installer pipenv :
+
+``` bash
+pip install pipenv
 ```
 
 * Activer environnement virtuel :
 
 ``` bash
-source env/bin/activate
+pipenv shell
 ```
 
 * Installer dépendances
 
 ``` bash
-pip install -r requirements.txt
+pipenv install
 ```
 
 * Créer une base de données
@@ -44,94 +50,52 @@ python manage.py init_local_dev
 python manage.py runserver
 ```
 
-## Commandes utiles
+* Lister les endpoints disponibles sur un navigateur web  
+http://127.0.0.1:8000/docs/swagger-ui/  
+*où 8000 est votre port configuré*
 
-* Desactiver environnement virtuel :
 
-``` bash
-deactivate
-```
+## Documentation de l'API
 
-* Sauvegarder dépendances
+http://127.0.0.1:8000/docs/redoc/  
+*où 8000 est votre port configuré*
 
-``` bash
-pip freeze > requirements.txt
-```
-
-* Mettre à jour la base de données
-
-``` bash
-python manage.py makemigrations
-python manage.py migrate
-```
-
-## Todo list
-
-- [x] Initialize project
-  - [x] Create Github repository
-  - [x] Create local folder with Django
-  - [x] Git init in local folder
-  - [x] Manage gitignore
-  - [x] Manage dependencies
-  - [x] Set settings timezone
-  - [x] Adapt readme.md
-  - [x] Create authentication app
-  - [x] Make migrations
-  - [x] Git push
-  - [x] Create superuser
-
-- [ ] Design project
-  - [x] Need analysis
-  - [x] Class diagramm
-  - [x] Paginate
-
-- [ ] Code project
-  - [x] Create users endpoint
-  - [x] Create first endpoint
-  - [x] Install drf-spectacular
-  - [x] Rewrite contributor en action 'patch' de project
-
-- [ ] Optimize project
-  - [ ] Check optimization project document
-  - [ ] Check OWASP
-
-- [ ] Test project
-  - [x] Write tests
-  - [ ] Test readme local new install
-
-- [ ] Clean project
-  - [ ] Generate flake8 report
-  - [ ] Check token duration
-  - [ ] Remove django-extensions package
-
-## Initialisation des données
+## Données initialisées
 
 ### Utilisateurs
 
-* Superuser
-username: Zeus
-password: string
+* User 1:  
+username: string  
+password: string  
 
-* User :
-username: Achille
-password: string
+* User 2:  
+username: Achille  
+password: string  
 
-* User :
-username: Ulysse
-password: string
+* User 3:  
+username: Hector  
+password: string  
 
-* User :
-username: Hector
-password: string
+* User 4:  
+username: Ulysse  
+password: string  
+
+* Superuser (id 5 ):  
+username: Zeus  
+password: string  
+
 
 ### Projets
 
-* Premier projet
-Propriétaire: string
-Contributeurs: John
+* Projet 1 : Prendre Troie
+*Propiétaire: Achille*
+*Contributeurs: Achille, Ulysse*
+*Possède issue 1 qui possède tous les comments*
 
-* Second projet
-Propriétaire: Ringo
+* Projet 2 : Résister aux Grecs
+*Propiétaire: Hector*
+*Contributeurs: Hector*
+*Ne possède pas d'issue*
 
 
 ## Diagrammes classes uml
