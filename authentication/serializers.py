@@ -35,11 +35,10 @@ class RegisterSerializer(ModelSerializer):
             'can_data_be_shared'
             )
 
-    def validate(self, attrs):
-        if attrs['age'] < 15:
-            raise ValidationError({"age": "L'âge minimum requis est de 15 ans"})
-        # TODO verif return
-        return attrs
+    def validate_age(self, value):
+        if value < 15:
+            raise ValidationError("L'âge minimum requis est de 15 ans")
+        return value
 
     def create(self, validated_data):
         user = User.objects.create(
