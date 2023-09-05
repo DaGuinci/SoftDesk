@@ -22,10 +22,6 @@ class UserSerializer(ModelSerializer):
     def __str__(self):
         return self.username
 
-    # def __repr__(self):
-    #     return self.username
-
-
 
 class RegisterSerializer(ModelSerializer):
 
@@ -42,7 +38,7 @@ class RegisterSerializer(ModelSerializer):
     def validate(self, attrs):
         if attrs['age'] < 15:
             raise ValidationError({"age": "L'âge minimum requis est de 15 ans"})
-
+        # TODO verif return
         return attrs
 
     def create(self, validated_data):
