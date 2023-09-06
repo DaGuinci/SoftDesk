@@ -34,7 +34,7 @@ pipenv install
 
 * Créer une base de données
 ``` bash
-python manage.py makemigration
+python manage.py makemigrations
 ```
 
 * Init local dev
