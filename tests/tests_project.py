@@ -121,6 +121,11 @@ class ProjectTestCases(ApiAPITestCase):
         response = self.client.patch(url, post_datas)
         self.assertEqual(response.status_code, 403)  # 403 Forbidden
 
+        # Authentifié comme contributeur
+        self.client.force_authenticate(user=self.ulysse)
+        response = self.client.patch(url, post_datas)
+        self.assertEqual(response.status_code, 403)  # 403 Forbidden
+
         # Authentifié comme auteur
         self.client.force_authenticate(user=self.achille)
         response = self.client.patch(url, post_datas)

@@ -5,6 +5,8 @@ from rest_framework.response import Response
 from rest_framework.decorators import action
 from rest_framework.pagination import PageNumberPagination
 
+from drf_spectacular.utils import extend_schema_view, extend_schema
+
 from authentication.permissions import (
     IsAuthenticated,
     )
@@ -30,9 +32,26 @@ class StandardResultsSetPagination(PageNumberPagination):
     page_size_query_param = 'page_size'
     max_page_size = 1000
 
-
+@extend_schema_view(
+    list=extend_schema(
+        summary="Récupérer tous les projets.",
+        description="Autorisation: superuser.",
+    ),
+    retrieve=extend_schema(
+        summary="Récupérer un projet.",
+        description="Autorisation: superuser, auteur, contributeurs.",
+    ),
+    create=extend_schema(
+        description="Autorisation: superuser, tout user authentifié.",
+    ),
+    partial_update=extend_schema(
+        description="Autorisation: superuser, auteur.",
+    ),
+    destroy=extend_schema(
+        description="Autorisation: superuser, auteur.",
+    ),
+)
 class ProjectViewset(ModelViewSet):
-
     permission_classes = [IsAuthenticated, ProjectPermissions]
     pagination_class = StandardResultsSetPagination
 
@@ -40,6 +59,9 @@ class ProjectViewset(ModelViewSet):
 
     serializer_class = ProjectSerializer
 
+    @extend_schema(
+        description="Autorisation: superuser, auteur.",
+    )
     @action(methods=['patch'],
             detail=True,
             url_name='add_contributor',
@@ -57,6 +79,9 @@ class ProjectViewset(ModelViewSet):
         else:
             return Response('Cet utilisateur est déjà contributeur du projet.')
 
+    @extend_schema(
+        description="Autorisation: superuser, auteur.",
+    )
     @action(methods=['patch'],
             detail=True,
             url_name='remove_contributor',
@@ -75,6 +100,9 @@ class ProjectViewset(ModelViewSet):
                 'L\'utilisateur n\'est pas contributeur de ce projet.'
                 )
 
+    @extend_schema(
+        description="Autorisation: superuser, auteur, contributeurs.",
+    )
     @action(methods=['get'],
             detail=True,
             url_name='get_issues',

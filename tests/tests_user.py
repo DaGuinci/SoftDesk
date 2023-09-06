@@ -77,6 +77,11 @@ class UserTestCases(AuthAPITestCase):
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)  # 200 OK
 
+        # superuser
+        self.client.force_authenticate(user=self.zeus)
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)  # 200 OK
+
     # test des update
     def test_can_update_profile(self):
         post_data = {
