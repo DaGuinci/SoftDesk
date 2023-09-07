@@ -35,11 +35,11 @@ class StandardResultsSetPagination(PageNumberPagination):
 @extend_schema_view(
     list=extend_schema(
         summary="Récupérer tous les projets.",
-        description="Autorisation: superuser.",
+        description="Autorisation: users.",
     ),
     retrieve=extend_schema(
         summary="Récupérer un projet.",
-        description="Autorisation: superuser, auteur, contributeurs.",
+        description="Autorisation: users.",
     ),
     create=extend_schema(
         description="Autorisation: superuser, tout user authentifié.",
@@ -101,7 +101,7 @@ class ProjectViewset(ModelViewSet):
                 )
 
     @extend_schema(
-        description="Autorisation: superuser, auteur, contributeurs.",
+        description="Autorisation: users.",
     )
     @action(methods=['get'],
             detail=True,
