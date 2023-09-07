@@ -13,7 +13,7 @@ class ProjectPermissions(BasePermission):
 
     def has_permission(self, request, view):
         if view.action in ['list']:
-            return request.user.is_authenticated and request.user.is_superuser
+            return request.user.is_authenticated
         return super().has_permission(request, view)
 
     def has_object_permission(self, request, view, obj):
@@ -23,8 +23,8 @@ class ProjectPermissions(BasePermission):
                 'retrieve',
                 'get_project_issues'
                 ]:
-            return (request.user in list(obj.contributors.all()) or
-                    request.user.is_superuser)
+            return request.user.is_authenticated
+
         elif view.action in [
                 'update',
                 'partial_update',
@@ -49,7 +49,7 @@ class IssuePermissions(BasePermission, IsProjectContributor):
             else:
                 return True
         elif view.action == 'list':
-            return request.user.is_authenticated and request.user.is_superuser
+            return request.user.is_authenticated
         else:
             return view.action in [
                 'retrieve',
@@ -61,7 +61,7 @@ class IssuePermissions(BasePermission, IsProjectContributor):
 
     def has_object_permission(self, request, view, obj):
         if view.action in ['retrieve', 'get_issue_comments']:
-            return self.is_contributor(request.user, obj.project)
+            return request.user.is_authenticated
         elif view.action in ('update', 'partial_update', 'destroy'):
             return obj.author == request.user
         return False
@@ -80,7 +80,7 @@ class CommentPermissions(BasePermission, IsProjectContributor):
             else:
                 return True
         elif view.action == 'list':
-            return request.user.is_authenticated and request.user.is_superuser
+            return request.user.is_authenticated
         else:
             return view.action in [
                 'retrieve',
@@ -91,7 +91,7 @@ class CommentPermissions(BasePermission, IsProjectContributor):
 
     def has_object_permission(self, request, view, obj):
         if view.action == 'retrieve':
-            return self.is_contributor(request.user, obj.issue.project)
+            return request.user.is_authenticated
         if view.action in ('update', 'partial_update', 'destroy'):
             return obj.author == request.user
         return False

@@ -52,7 +52,7 @@ class ContributingTestCases(ApiAPITestCase):
 
         url = reverse_lazy('project-add_contributor', kwargs={'pk': self.project_1.id})
         post_datas = {
-            'contributor': self.hector.id
+            'contributor': self.hector.username
         }
 
         # Authentifié non auteur
@@ -78,7 +78,7 @@ class ContributingTestCases(ApiAPITestCase):
 
         url = reverse_lazy('project-remove_contributor', kwargs={'pk': self.project_1.id})
         post_datas = {
-            'contributor': self.ulysse.id
+            'contributor': self.ulysse.username
         }
 
         # Authentifié non auteur

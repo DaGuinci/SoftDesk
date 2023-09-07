@@ -57,8 +57,7 @@ class IssueTestCases(ApiAPITestCase):
         # Authentified
         self.client.force_authenticate(user=self.hector)
         response = self.client.get(url)
-        self.assertEqual(response.status_code, 403) # 403 Forbidden
-
+        self.assertEqual(response.status_code, 200) # 200 OK
         # Superuser
         self.client.force_authenticate(user=self.zeus)
         response = self.client.get(url)
@@ -75,7 +74,7 @@ class IssueTestCases(ApiAPITestCase):
         # Authentified not contributor
         self.client.force_authenticate(user=self.hector)
         response = self.client.get(url)
-        self.assertEqual(response.status_code, 403) # 403 Forbidden
+        self.assertEqual(response.status_code, 200) # 200 OK
 
         # Authentified contributor
         self.client.force_authenticate(user=self.ulysse)
@@ -92,7 +91,7 @@ class IssueTestCases(ApiAPITestCase):
         # Authentified not contributor
         self.client.force_authenticate(user=self.hector)
         response = self.client.get(url)
-        self.assertEqual(response.status_code, 403) # 403 Forbidden
+        self.assertEqual(response.status_code, 200) # 200 OK
 
         # Authentified contributor
         self.client.force_authenticate(user=self.ulysse)
