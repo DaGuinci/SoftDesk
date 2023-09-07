@@ -71,10 +71,10 @@ class ProjectViewset(ModelViewSet):
     def add_contributor(self, request, pk, contributor=None):
         new_contributor = get_object_or_404(
             User,
-            pk=request.data['contributor']
+            username=request.data['contributor']
             )
         if new_contributor not in self.get_object().contributors.all():
-            self.get_object().contributors.add(request.data['contributor'])
+            self.get_object().contributors.add(new_contributor.id)
             return Response('Contributeur ajouté')
         else:
             return Response('Cet utilisateur est déjà contributeur du projet.')
@@ -90,10 +90,10 @@ class ProjectViewset(ModelViewSet):
     def remove_contributor(self, request, pk, contributor=None):
         new_contributor = get_object_or_404(
             User,
-            pk=request.data['contributor']
+            username=request.data['contributor']
             )
         if new_contributor in self.get_object().contributors.all():
-            self.get_object().contributors.remove(request.data['contributor'])
+            self.get_object().contributors.remove(new_contributor.id)
             return Response('Contributeur supprimé')
         else:
             return Response(
