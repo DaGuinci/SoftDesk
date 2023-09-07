@@ -37,6 +37,10 @@ pipenv install
 python manage.py makemigrations
 ```
 
+``` bash
+python manage.py migrate
+```
+
 * Init local dev
 ``` bash
 python manage.py init_local_dev
