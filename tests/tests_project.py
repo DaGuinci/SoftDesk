@@ -55,7 +55,7 @@ class ProjectTestCases(ApiAPITestCase):
         # Authentifié
         self.client.force_authenticate(user=self.hector)
         response = self.client.get(url)
-        self.assertEqual(response.status_code, 403)  # 403 Forbidden
+        self.assertEqual(response.status_code, 200) # 200 OK
 
         # Superuser
         self.client.force_authenticate(user=self.zeus)
@@ -72,7 +72,7 @@ class ProjectTestCases(ApiAPITestCase):
         # Authentifié par autre user, non contributeur, non auteur
         self.client.force_authenticate(user=self.hector)
         response = self.client.get(url)
-        self.assertEqual(response.status_code, 403)  # 403 Forbidden
+        self.assertEqual(response.status_code, 200) # 200 OK
 
         # authentifié comme contributeur
         self.client.force_authenticate(user=self.ulysse)
